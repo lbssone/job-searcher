@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block head %}
+  <link rel="stylesheet" href="../static/stylesheets/index.css">
+{% endblock %}
+
+{% block body %}
+  <form action="/" method="post" id="keyword_form">
+      <div class="form-group row">
+        <label class="col-form-label" for="keyword_input">搜尋職缺：</label>
+        <div class="col-sm-5">
+          <input type="text" class="form-control" name="keyword" id="keyword_input" placeholder="請輸入">
+        </div>
+        <button type="submit" class="btn btn-info">送出</button>
+      </div> 
+  </form>
+
+  {% if keyword %}
+    {% for job in job_list %}
+      <!-- {% set info = job['info'] %} -->
+      <div>
+        <a href="{{ job.link }}"></a>
+      </div>
+      <div class="card">
+          <div class="card-header">
+              <h4>{{ job.title }}</h4>
+          </div>
+          <div class="card-body">
+            <h5 class="card-title">簡介：</h5>
+            <p class="card-text">{{ job.info[0:150] }}...</p>
+            <a href="{{ job.link }}" class="btn btn-info">前往連結</a>
+          </div>
+      </div>
+    {% endfor %}
+  {% endif %}
+
+{% endblock %}
