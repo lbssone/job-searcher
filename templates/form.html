@@ -1,0 +1,51 @@
+<form action="/" method="post" id="keyword_form">
+  <div class="row">
+    <!-- <label class="col-form-label" for="keyword_input">搜尋職缺：</label> -->
+    <div class="col-sm-5">
+      <input type="text" class="form-control" name="keyword" id="keyword_input" value="{{ request.form['keyword'] }}" placeholder="搜尋職缺：請輸入關鍵字">
+    </div>
+    <div class="col-sm-2">
+      <select title="地區" class="selectpicker" multiple data-live-search="true" data-max-options="5" data-width="100%" liveSearchPlaceholder="請選擇地區">
+        <optgroup label="台北市">
+        <!-- <option data-divider="true"></option> -->
+          <option>信義區</option>
+          <option>大安區</option>
+        </optgroup>
+        <option>台中市</option>
+        <option data-divider="true"></option>
+        <option>台南市</option>
+        <option data-divider="true"></option>
+      </select>
+      <!-- <input 
+        type="text" 
+        class="form-control dropdown-toggle" 
+        name="region" 
+        id="region_input" 
+        value="{{ request.form['region'] }}" 
+        placeholder="地區" 
+        data-toggle="dropdown"> -->
+    </div>
+    <div class="col-sm-2">
+      <input type="text" class="form-control" name="category" id="category_input" value="{{ request.form['category'] }}" placeholder="職務類別">
+    </div>
+    <div class="btn-group">
+      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+        Action <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu">
+        <form>
+            <div class="form-group">
+              <input type="email" class="form-control" id="inputEmail1" placeholder="Email">
+            </div>
+            <div class="form-group">
+              <input type="password" class="form-control" id="inputPassword1" placeholder="Password">
+            </div>
+            <div class="form-group">
+              <button type="submit" class="btn btn-default">Sign in</button>
+            </div>
+        </form>
+      </ul>
+    </div>
+    <button type="submit" class="btn btn-info">搜尋</button>
+  </div> 
+</form>
