@@ -1,8 +1,13 @@
-from flask import Flask, request, render_template, url_for
+import os
+from flask import Flask, request, render_template, url_for, current_app
+from flask_pager import Pager
 import requests
 from pyquery import PyQuery as pq
 
 app = Flask(__name__)
+app.secret_key = os.urandom(42)
+app.config['PAGE_SIZE'] = 20
+app.config['VISIBLE_PAGE_COUNT'] = 10
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -11,6 +16,8 @@ def index():
         return render_template('index.html')
     elif request.method == 'POST':
         keyword = request.values['keyword']
+        if not keyword:
+            keyword = ''
         # 104
         response_104 = requests.get('https://www.104.com.tw/jobs/search/?ro=0&kwop=7&keyword={}&order=14&asc=0&page=1&mode=s&jobsource=2018indexpoc'.format(keyword))
         doc_104 = pq(response_104.text)
@@ -86,7 +93,16 @@ def index():
         #         job_dict['experience'] = job_doc('.exp').text()
         #         job_dict['education'] = job_doc('.edu').text().split('/ ')[-1]        
         #         job_list.append(job_dict)
-        return render_template('index.html', keyword=keyword, job_list=job_list)
+            print(job_list)
+            page = int(request.args.get('page', 1))
+            count = len(job_list)
+            data = job_list
+            pager = Pager(page, count)
+            pages = pager.get_pages()
+            skip = (page - 1) * current_app.config['PAGE_SIZE']
+            limit = current_app.config['PAGE_SIZE']
+            data_to_show = data[skip: skip + limit]
+        return render_template('index.html', keyword=keyword, pages=pages, job_list=data_to_show)
 
 
 
