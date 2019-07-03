@@ -1,13 +1,8 @@
-import os
-from flask import Flask, request, render_template, url_for, current_app
-from flask_pager import Pager
+from flask import Flask, request, render_template, url_for
 import requests
 from pyquery import PyQuery as pq
 
 app = Flask(__name__)
-app.secret_key = os.urandom(42)
-app.config['PAGE_SIZE'] = 20
-app.config['VISIBLE_PAGE_COUNT'] = 10
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -94,15 +89,7 @@ def index():
         #         job_dict['education'] = job_doc('.edu').text().split('/ ')[-1]        
         #         job_list.append(job_dict)
             print(job_list)
-            page = int(request.args.get('page', 1))
-            count = len(job_list)
-            data = job_list
-            pager = Pager(page, count)
-            pages = pager.get_pages()
-            skip = (page - 1) * current_app.config['PAGE_SIZE']
-            limit = current_app.config['PAGE_SIZE']
-            data_to_show = data[skip: skip + limit]
-        return render_template('index.html', keyword=keyword, pages=pages, job_list=data_to_show)
+        return render_template('index.html', keyword=keyword, job_list=job_list)
 
 
 

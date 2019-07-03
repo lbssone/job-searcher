@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-{% import "_macros.html" as macros %}
 
 {% block head %}
   <link rel="stylesheet" href="../static/stylesheets/index.css">
@@ -26,7 +25,6 @@
         </div>
       </div>
     {% endfor %}
-    {{ macros.pagination_widget(pages, 'index') }}
   {% endif %}
 
 {% endblock %}
