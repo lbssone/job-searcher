@@ -19,17 +19,16 @@ def get_key_word():
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    if request.method == 'GET':
-        return render_template('index.html')
-    elif request.method =='POST':
+    if request.method =='POST':
+        job_list.clear()
         global keyword
-        keyword = request.values['keyword']
+        keyword = request.values.get('keyword')
+        region = request.values.getlist('region')
         for k in keyword:
             if k in char_dict:
                 keyword_trans = keyword.replace(k, char_dict[k])
             else:
                 keyword_trans = keyword
-        job_list.clear()
         if not keyword:
             keyword_trans = ''
         # 104
@@ -110,9 +109,9 @@ def index():
         
         print(job_list)
         print(url)
-        print(keyword)
-        print(keyword_trans)
+        print(region)
         return redirect(url_for('results'))
+    return render_template('index.html')
 
 @app.route('/results')
 def results():
@@ -122,7 +121,6 @@ def results():
     pagination_job_list = get_job_list(offset=offset, per_page=per_page)
     pagination = Pagination(page=page, per_page=per_page, total=total, css_framework='bootstrap4')
     keyword = get_key_word()
-    print(job_list)
     print('results: ' + keyword)
     return render_template('index.html', keyword=keyword, job_list=pagination_job_list,
                            page=page,
