@@ -1,10 +1,10 @@
 <form action="/" method="post" id="keyword_form">
   <div class="row">
     <!-- <label class="col-form-label" for="keyword_input">搜尋職缺：</label> -->
-    <div class="col-sm-5">
-      <input type="text" class="form-control" name="keyword" id="keyword_input" value="{{ request.form['keyword'] }}" placeholder="搜尋職缺：請輸入關鍵字">
+    <div class="col-sm-4">
+      <input type="text" class="form-control" name="keyword" id="keyword_input" value="{{ keyword }}" placeholder="搜尋職缺：請輸入關鍵字">
     </div>
-    <div class="col-sm-2">
+    <div class="col-sm-3">
       <select title="地區" class="selectpicker" multiple data-live-search="true" data-max-options="5" data-width="100%" liveSearchPlaceholder="請選擇地區">
         <optgroup label="台北市">
         <!-- <option data-divider="true"></option> -->

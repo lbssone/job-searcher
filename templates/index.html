@@ -6,10 +6,7 @@
 
 {% block body %}
 
-{% if job_list %}
     {% for job in job_list %}
-      <!-- {% set info = job['info'] %} -->
-
       <div class="card">
         <div class="card-header">
           <h4>{{ job.title }}</h4>
@@ -25,6 +22,8 @@
         </div>
       </div>
     {% endfor %}
-  {% endif %}
+    {% if pagination %}
+      {{ pagination.links }}
+    {% endif %}
 
 {% endblock %}

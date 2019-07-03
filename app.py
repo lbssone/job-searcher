@@ -1,23 +1,41 @@
 from flask import Flask, request, render_template, url_for
+from flask_paginate import Pagination, get_page_args
 import requests
 from pyquery import PyQuery as pq
 
 app = Flask(__name__)
+job_list = []
+char_dict = {' ':'%20', '!':'%21', '"':'%22', '#':'%23', '$':'%24', '%':'%25', '&':'%26', '\'':'%27',
+            '(':'%28', ')':'%29', '*':'%2A', '+':'%2B', ',':'%2C', '-':'%2D', '.':'%2E', '/':'%2F'}
+
+
+def get_job_list(offset=0, per_page=10):
+    return job_list[offset: offset + per_page]
 
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
+    keyword = ''
     if request.method == 'GET':
-        return render_template('index.html')
+        page, per_page, offset = get_page_args(page_parameter='page',
+                                        per_page_parameter='per_page')
+        total = len(job_list)
+        pagination_job_list = get_job_list(offset=offset, per_page=per_page)
+        pagination = Pagination(page=page, per_page=per_page, total=total, css_framework='bootstrap4')
+        return render_template('index.html', keyword=keyword, job_list=pagination_job_list, page=page, per_page=per_page, pagination=pagination)
     elif request.method == 'POST':
         keyword = request.values['keyword']
+        for k in keyword:
+            if k in char_dict:
+                keyword = keyword.replace(k, char_dict[k])
+        job_list.clear()
         if not keyword:
             keyword = ''
         # 104
         response_104 = requests.get('https://www.104.com.tw/jobs/search/?ro=0&kwop=7&keyword={}&order=14&asc=0&page=1&mode=s&jobsource=2018indexpoc'.format(keyword))
         doc_104 = pq(response_104.text)
         total_page_104 = int(doc_104('#job-jobList > script:nth-child(14)').text().split('totalPage":')[1].split(',')[0])
-        job_list = []
+        # job_list = []
         # for page_num in range(1, int((total_page_104+1)/10)):
         for page_num in range(1, 5):
             url = 'https://www.104.com.tw/jobs/search/?ro=0&kwop=7&keyword={}&order=14&asc=0&page={}&mode=s&jobsource=2018indexpoc'.format(keyword, page_num)
@@ -88,8 +106,14 @@ def index():
         #         job_dict['experience'] = job_doc('.exp').text()
         #         job_dict['education'] = job_doc('.edu').text().split('/ ')[-1]        
         #         job_list.append(job_dict)
-            print(job_list)
-        return render_template('index.html', keyword=keyword, job_list=job_list)
+        page, per_page, offset = get_page_args(page_parameter='page',
+                                        per_page_parameter='per_page')
+        total = len(job_list)
+        pagination_job_list = get_job_list(offset=offset, per_page=per_page)
+        pagination = Pagination(page=page, per_page=per_page, total=total, css_framework='bootstrap4')
+        print(job_list)
+        print(url)
+        return render_template('index.html', keyword=keyword, job_list=pagination_job_list, page=page, per_page=per_page, pagination=pagination)
 
 
 
