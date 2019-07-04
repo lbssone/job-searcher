@@ -2,10 +2,10 @@
   <div class="row">
     <!-- <label class="col-form-label" for="keyword_input">搜尋職缺：</label> -->
     <div class="col-sm-4">
-      <input type="text" class="form-control" name="keyword" id="keyword_input" value="{{ keyword }}" placeholder="搜尋職缺：請輸入關鍵字">
+      <input type="text" class="form-control form-control-lg" name="keyword" id="keyword_input" value="{{ keyword }}" placeholder="搜尋職缺：請輸入關鍵字">
     </div>
     <div class="col-sm-3">
-      <select title="地區" name='region' class="selectpicker" multiple data-live-search="true" data-max-options="5" data-width="100%" liveSearchPlaceholder="請選擇地區">
+      <select title="地區" name='region' class="selectpicker form-control form-control-lg" multiple data-live-search="true" data-max-options="5" data-width="100%" liveSearchPlaceholder="請選擇地區">
         <optgroup label="台北市">
         <!-- <option data-divider="true"></option> -->
           <option value='a'>信義區</option>
@@ -25,8 +25,8 @@
         placeholder="地區" 
         data-toggle="dropdown"> -->
     </div>
-    <div class="col-sm-2">
-      <input type="text" class="form-control" name="category" id="category_input" value="{{ request.form['category'] }}" placeholder="職務類別">
+    <div class="col-sm-3">
+      <input type="text" class="form-control form-control-lg" name="category" id="category_input" value="{{ request.form['category'] }}" placeholder="職務類別">
     </div>
     <!-- <div class="btn-group">
       <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -46,6 +46,6 @@
         </form>
       </ul>
     </div> -->
-    <button type="submit" class="btn btn-info">搜尋</button>
+    <button type="submit" class="btn btn-info search"><span>搜尋</span></button>
   </div> 
 </form>

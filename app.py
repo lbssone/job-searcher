@@ -8,6 +8,7 @@ job_list = []
 char_dict = {' ':'%20', '!':'%21', '"':'%22', '#':'%23', '$':'%24', '%':'%25', '&':'%26', '\'':'%27',
             '(':'%28', ')':'%29', '*':'%2A', '+':'%2B', ',':'%2C', '-':'%2D', '.':'%2E', '/':'%2F'}
 keyword = ''
+search_history = {}
 
 
 def get_job_list(offset=0, per_page=10):
@@ -31,6 +32,11 @@ def index():
                 keyword_trans = keyword
         if not keyword:
             keyword_trans = ''
+        if region:
+            condition = keyword + '+' + '+'.join(region)
+        else:
+            condition = keyword
+        # search_history[condition] = 
         # 104
         # response_104 = requests.get('https://www.104.com.tw/jobs/search/?ro=0&kwop=7&keyword={}&order=14&asc=0&page=1&mode=s&jobsource=2018indexpoc'.format(keyword_trans))
         # doc_104 = pq(response_104.text)
@@ -112,6 +118,7 @@ def index():
         print(region)
         return redirect(url_for('results'))
     return render_template('index.html')
+
 
 @app.route('/results')
 def results():

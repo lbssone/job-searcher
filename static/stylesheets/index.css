@@ -1,11 +1,20 @@
-#keyword_form {
-  margin: 30px 0px 30px 0px;
+.job-results-block {
+  display: flex;
 }
 
-/* .row {
-  margin-left: 0;
-} */
+.job-results {
+  width: 80%;
+  margin-right: 2%;
+}
+
+.search-history {
+  width: 20%;
+}
 
 .card-header h4 {
+  font-weight: 600;
+}
+
+.card-title {
   font-weight: 600;
 }
