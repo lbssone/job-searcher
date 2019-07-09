@@ -5,11 +5,14 @@
 {% endblock %}
 
 {% block body %}
-  {% if job_list %}
-    {{ pagination.links }}
-
-    <div class='job-results-block'>
-      <div class='job-results'>
+  {% if pagination %}
+    <div>
+      {{ pagination.links }}
+    </div>
+  {% endif %}
+  <div class='job-results-block'>
+    <div class='job-results'>
+      {% if job_list %}
         {% for job in job_list %}
           <div class="card">
             <div class="card-header">
@@ -23,23 +26,23 @@
               <p class="card-text">{{ job.info[0:150] }}...</p>
               <p><a href="#" class="badge badge-secondary">{{ job.salary }}</a></p>
               <a href="{{ job.link }}" class="btn btn-info">前往連結</a>
+              <button type="button" class="btn btn-outline-info">收藏職缺</button>
             </div>
           </div>
         {% endfor %}
-      </div>
-      <div class="search-history">
-        <div class="card">
-          <div class="card-body">
-            <h6 class="card-title">最近搜尋條件：</h6>
-            <p class="card-text"></p>
-          </div>
+        {{ pagination.links }}
+      {% endif %}
+    </div>
+    <div class="search-history">
+      <div class="card">
+        <div class="card-body">
+          <h6 class="card-title">最近搜尋條件：</h6>
+          {% for history_condition, history_link in search_history.items() %}
+            <p><a href='{{ history_link }}' class="card-text">{{ history_condition }}</a></p>
+          {% endfor %}
         </div>
-        
       </div>
     </div>
-
-    {{ pagination.links }}
-
-  {% endif %}
+  </div>
 
 {% endblock %}

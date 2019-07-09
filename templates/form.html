@@ -1,4 +1,4 @@
-<form action="/" method="POST" id="keyword_form">
+<form action="/search" method="GET" id="keyword_form">
   <div class="row">
     <!-- <label class="col-form-label" for="keyword_input">搜尋職缺：</label> -->
     <div class="col-sm-4">
@@ -8,8 +8,8 @@
       <select title="地區" name='region' class="selectpicker form-control form-control-lg" multiple data-live-search="true" data-max-options="5" data-width="100%" liveSearchPlaceholder="請選擇地區">
         <optgroup label="台北市">
         <!-- <option data-divider="true"></option> -->
-          <option value='a'>信義區</option>
-          <option value='b'>大安區</option>
+          <option value='信義區'>信義區</option>
+          <option value='大安區'>大安區</option>
         </optgroup>
         <option>台中市</option>
         <option data-divider="true"></option>
