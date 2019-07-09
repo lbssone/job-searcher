@@ -164,6 +164,7 @@ def interview():
         results_doc = doc('#search .srg .g')
         # for result_doc in results_doc.items:
 
+
         return render_template('interview_results.html', )
 
 
