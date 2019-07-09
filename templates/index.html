@@ -5,6 +5,8 @@
 {% endblock %}
 
 {% block body %}
+  {% include 'form.html' %}
+
   {% if pagination %}
     <div>
       {{ pagination.links }}
@@ -42,6 +44,10 @@
           {% endfor %}
         </div>
       </div>
+      <a href='{{ interview_url }}' role="button" class="btn btn-info">面試經驗分享</a>
+      <form action="/interview" method="POST">
+        <button type="submit" class="btn btn-info" value='{{ keyword }}' name='interview-btn'>面試經驗分享</button>
+      </form>
     </div>
   </div>
 

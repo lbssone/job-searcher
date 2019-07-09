@@ -75,55 +75,55 @@ def search():
             job_dict['education'] = job_doc('ul.b-list-inline.b-clearfix.job-list-intro.b-content li:nth-child(5)').text()            
             job_list.append(job_dict)
     # 1111
-    # response_1111 = requests.get('https://www.1111.com.tw/job-bank/job-index.asp?si=1&ss=s&ks={}&page=1'.format(keyword))
-    # count = 0
-    # while count < 5:
-    #     doc = pq(response_1111.text)
-    #     jobs_doc = doc('#jobResult #record_1 li.digest')
-    #     for job_doc in jobs_doc.items():
-    #         job_dict = {}
-    #         job_dict['title'] = job_doc('.jbInfoin h3 a').text()
-    #         job_dict['link'] = job_doc('.jbInfoin h3 a').attr('href')
-    #         job_dict['date'] = job_doc('.jbControl .date').text()
-    #         job_dict['info'] = job_doc('.jbInfoTxt p').text()
-    #         job_dict['company'] = {}
-    #         job_dict['company']['name'] = job_doc('.jbInfoin h4 a').text()
-    #         job_dict['company']['link'] = job_doc('.jbInfoin h4 a').attr('href')
-    #         job_dict['region'] = job_doc('.jbControl .location a').text()
-    #         job_dict['salary'] = job_doc('.needs').text().split('|')[0]
-    #         job_dict['experience'] = job_doc('.needs').text().split('|')[1]
-    #         job_dict['education'] = job_doc('.needs').text().split('|')[2]            
-    #         job_list.append(job_dict)
-    #     next_page_link = doc("#PageFooterD .pagination a.active").parent().next().children().attr("href")
-    #     if next_page_link:
-    #         response = requests.get('https://www.1111.com.tw/job-bank/job-index.asp' + next_page_link)
-    #         count += 1
-    #     else:
-    #         break
+    response_1111 = requests.get('https://www.1111.com.tw/job-bank/job-index.asp?si=1&ss=s&ks={}&page=1'.format(keyword))
+    count = 0
+    while count < 5:
+        doc = pq(response_1111.text)
+        jobs_doc = doc('#jobResult #record_1 li.digest')
+        for job_doc in jobs_doc.items():
+            job_dict = {}
+            job_dict['title'] = job_doc('.jbInfoin h3 a').text()
+            job_dict['link'] = job_doc('.jbInfoin h3 a').attr('href')
+            job_dict['date'] = job_doc('.jbControl .date').text()
+            job_dict['info'] = job_doc('.jbInfoTxt p').text()
+            job_dict['company'] = {}
+            job_dict['company']['name'] = job_doc('.jbInfoin h4 a').text()
+            job_dict['company']['link'] = job_doc('.jbInfoin h4 a').attr('href')
+            job_dict['region'] = job_doc('.jbControl .location a').text()
+            job_dict['salary'] = job_doc('.needs').text().split('|')[0]
+            job_dict['experience'] = job_doc('.needs').text().split('|')[1]
+            job_dict['education'] = job_doc('.needs').text().split('|')[2]            
+            job_list.append(job_dict)
+        next_page_link = doc("#PageFooterD .pagination a.active").parent().next().children().attr("href")
+        if next_page_link:
+            response = requests.get('https://www.1111.com.tw/job-bank/job-index.asp' + next_page_link)
+            count += 1
+        else:
+            break
     
-    # # 518
-    # response_518 = requests.get('https://www.518.com.tw/job-index.html?ad={}&aa=&ab=2032001&ac=&am=&i='.format(keyword))
-    # doc_518 = pq(response_518.text)
-    # total_page_518 = int(doc_518('#linkpage span.pagecountnum').text().split(' / ')[-1])
-    # for page_num in range(1, total_page_518+1):
-    #     url = 'https://www.518.com.tw/job-index-P-{}.html?i=1&am=1&ab=2032001,&ad={}'.format(page_num, keyword)
-    #     response = requests.get(url)
-    #     doc = pq(response.text)
-    #     jobs_doc = doc("#listContent ul")
-    #     for job_doc in jobs_doc.items():
-    #         job_dict = {}
-    #         job_dict['title'] = job_doc('.title a').text()
-    #         job_dict['link'] = job_doc('.title a').attr('href')
-    #         job_dict['date'] = job_doc('.date').text()
-    #         job_dict['info'] = job_doc('.sumbox p:nth-child(2)').text()
-    #         job_dict['company'] = {}
-    #         job_dict['company']['name'] = job_doc('.company a').text()
-    #         job_dict['company']['link'] = job_doc('.company a').attr('href')
-    #         job_dict['region'] = job_doc('.area').text()
-    #         job_dict['salary'] = job_doc('.sumbox p:nth-child(1)').text()
-    #         job_dict['experience'] = job_doc('.exp').text()
-    #         job_dict['education'] = job_doc('.edu').text().split('/ ')[-1]        
-    #         job_list.append(job_dict)
+    # 518
+    response_518 = requests.get('https://www.518.com.tw/job-index.html?ad={}&aa=&ab=2032001&ac=&am=&i='.format(keyword))
+    doc_518 = pq(response_518.text)
+    total_page_518 = int(doc_518('#linkpage span.pagecountnum').text().split(' / ')[-1])
+    for page_num in range(1, total_page_518+1):
+        url = 'https://www.518.com.tw/job-index-P-{}.html?i=1&am=1&ab=2032001,&ad={}'.format(page_num, keyword)
+        response = requests.get(url)
+        doc = pq(response.text)
+        jobs_doc = doc("#listContent ul")
+        for job_doc in jobs_doc.items():
+            job_dict = {}
+            job_dict['title'] = job_doc('.title a').text()
+            job_dict['link'] = job_doc('.title a').attr('href')
+            job_dict['date'] = job_doc('.date').text()
+            job_dict['info'] = job_doc('.sumbox p:nth-child(2)').text()
+            job_dict['company'] = {}
+            job_dict['company']['name'] = job_doc('.company a').text()
+            job_dict['company']['link'] = job_doc('.company a').attr('href')
+            job_dict['region'] = job_doc('.area').text()
+            job_dict['salary'] = job_doc('.sumbox p:nth-child(1)').text()
+            job_dict['experience'] = job_doc('.exp').text()
+            job_dict['education'] = job_doc('.edu').text().split('/ ')[-1]        
+            job_list.append(job_dict)
     
     print(job_list)
     print(url)
@@ -150,6 +150,23 @@ def results():
                             page=page,
                             per_page=per_page,
                             pagination=pagination)
+
+@app.route('/interview', methods=['GET', 'POST'])
+def interview():
+    if request.method == 'GET':
+        return render_template('interview_results.html')
+    elif request.method == 'POST':
+        result_list = []
+        interview_keyword = request.values.get('interview-btn')
+        interview_url = 'http://www.google.com/search?q={}%20面試&num=30&oe=utf8'.format(interview_keyword)
+        response = requests.get(interview_url)
+        doc = pq(response.text)
+        results_doc = doc('#search .srg .g')
+        # for result_doc in results_doc.items:
+
+        return render_template('interview_results.html', )
+
+
 
 if __name__ == "__main__":
     app.run(port=5000, debug = True)
