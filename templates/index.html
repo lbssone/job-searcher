@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 
 {% block head %}
-  <link rel="stylesheet" href="../static/stylesheets/index.css">
+  
 {% endblock %}
 
 {% block body %}
-  {% include 'form.html' %}
+  {% include 'jobForm.html' %}
 
   {% if pagination %}
     <div>
@@ -44,10 +44,12 @@
           {% endfor %}
         </div>
       </div>
-  
-      <form action="/interview" method="POST">
-        <button type="submit" class="btn btn-info" value='{{ keyword }}' name='interview-btn'>面試經驗分享</button>
-      </form>
+
+      {% if job_list %}
+        <form action="/interview" method="POST">
+          <button type="submit" class="btn btn-info" value='{{ keyword }}' name='interview-btn'>面試經驗分享</button>
+        </form>
+      {% endif %}
     </div>
   </div>
 

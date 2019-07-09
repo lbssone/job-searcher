@@ -2,12 +2,14 @@ from flask import Flask, request, render_template, url_for, redirect
 from flask_paginate import Pagination, get_page_args
 import requests
 from pyquery import PyQuery as pq
+import json
 
 app = Flask(__name__)
 job_list = []
 char_dict = {' ':'%20', '!':'%21', '"':'%22', '#':'%23', '$':'%24', '%':'%25', '&':'%26', '\'':'%27',
             '(':'%28', ')':'%29', '*':'%2A', '+':'%2B', ',':'%2C', '-':'%2D', '.':'%2E', '/':'%2F'}
 keyword = ''
+keyword_trans = ''
 region = []
 category = ''
 search_history = {}
@@ -27,7 +29,7 @@ def index():
 @app.route('/search')
 def search():
     job_list.clear()
-    global keyword, region, category
+    global keyword, region, category, keyword_trans
     keyword = request.values.get('keyword')
     region = request.values.getlist('region')
     category = request.values.get('category')
@@ -141,6 +143,7 @@ def results():
     pagination = Pagination(page=page, per_page=per_page, total=total, css_framework='bootstrap4')
     keyword = get_key_word()
     print('keyword: ' + keyword)
+    print('keyword_trans: ' + keyword_trans)
     return render_template('index.html', 
                             keyword=keyword, 
                             region=region,
@@ -156,16 +159,29 @@ def interview():
     if request.method == 'GET':
         return render_template('interview_results.html')
     elif request.method == 'POST':
-        result_list = []
-        interview_keyword = request.values.get('interview-btn')
-        interview_url = 'http://www.google.com/search?q={}%20面試&num=30&oe=utf8'.format(interview_keyword)
-        response = requests.get(interview_url)
-        doc = pq(response.text)
-        results_doc = doc('#search .srg .g')
-        # for result_doc in results_doc.items:
-
-
-        return render_template('interview_results.html', )
+        interview_list = []
+        global keyword_trans
+        keyword_trans
+        api_key = 'AIzaSyAjbXA-q2exro1mvZAGejN_QJ53JuH0O44'
+        cx = '008688161330259078405:trwkkultef8'
+        url = 'https://www.googleapis.com/customsearch/v1?key={}&cx={}&lr=lang_zh-TW&q={}%20面試'.format(api_key, cx, keyword_trans)
+        response = requests.get(url)
+        data = json.loads(response.text)
+        interview_results = data['items']
+        for interview in interview_results:
+            interview_dict = {}
+            interview_dict['title'] = interview['title']
+            interview_dict['link'] = interview['link']
+            snippet = interview['snippet'].split(' ... ')
+            if len(snippet) > 1:
+                interview_dict['date'] = snippet[0]
+                interview_dict['snippet'] = snippet[1]
+            else:
+                interview_dict['snippet'] = snippet[0]
+            # interview_dict['full_description'] = interview['pagemap']['metatags'][0]['og:description']
+            interview_list.append(interview_dict)
+        print(url)
+        return render_template('interview_results.html', interview_list=interview_list)
 
 
 

@@ -1,6 +1,20 @@
 {% extends 'base.html' %}
 {% block body %}
-    
-    
-  {{ content }}
+  {% include 'interviewForm.html' %}
+  <div class='interview-results-block'>
+      <div class='interview-results'>
+      {% if interview_list %}
+        {% for interview in interview_list %}
+          <div class="card">
+              <div class="card-header">
+                <h5><a href='{{ interview.link }}' target='_blank'>{{ interview.title }}</a></h5>
+              </div>
+              <div class="card-body">
+                <p>{{ interview.date }}</p>
+                <a href='{{ interview.link }}' target="_blank"></a>
+                <p class="card-text">{{ interview.snippet[0:150] }}...</p>
+              </div>
+            </div>
+        {% endfor %}
+      {% endif %}
 {% endblock %}
