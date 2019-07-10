@@ -3,6 +3,7 @@ from flask_paginate import Pagination, get_page_args
 import requests
 from pyquery import PyQuery as pq
 import json
+from area import area_dict
 
 app = Flask(__name__)
 job_list = []
@@ -10,8 +11,10 @@ char_dict = {' ':'%20', '!':'%21', '"':'%22', '#':'%23', '$':'%24', '%':'%25', '
             '(':'%28', ')':'%29', '*':'%2A', '+':'%2B', ',':'%2C', '-':'%2D', '.':'%2E', '/':'%2F'}
 keyword = ''
 keyword_trans = ''
-region = []
+area_list = []
+area_num_list = []
 category = ''
+interview_keyword = ''
 search_history = {}
 
 
@@ -22,17 +25,23 @@ def get_key_word():
     return keyword
 
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/')
 def index():
-    return render_template('index.html', search_history=search_history)
+    return render_template('index.html', search_history=search_history, area_dict=area_dict)
 
 @app.route('/search')
 def search():
+    global job_list, keyword, keyword_trans, area_list, area_num_list, category 
     job_list.clear()
-    global keyword, region, category, keyword_trans
+    area_list.clear()
+    area_num_list.clear()
     keyword = request.values.get('keyword')
-    region = request.values.getlist('region')
+    area_list = request.values.getlist('area')
+    for a in area_list:
+        area_num_list.append(area_dict[a])
     category = request.values.get('category')
+    work_time = request.values.get('work-time')
+    salary = request.values.get('salary')
     for k in keyword:
         if k in char_dict:
             keyword_trans = keyword.replace(k, char_dict[k])
@@ -43,9 +52,9 @@ def search():
 
     search_url = 'http://127.0.0.1:5000/search?keyword=' + keyword_trans
 
-    if region:
-        condition = keyword + '+' + '+'.join(region)
-        search_url = '{}&region={}'.format(search_url, '&region='.join(region))
+    if area_num_list:
+        condition = keyword + '+' + '+'.join(area_list)
+        search_url = '{}&area={}'.format(search_url, '&area='.join(area_num_list))
     else:
         condition = keyword
     if category:
@@ -58,7 +67,7 @@ def search():
     # job_list = []
     # for page_num in range(1, int((total_page_104+1)/10)):
     for page_num in range(1, 5):
-        url = 'https://www.104.com.tw/jobs/search/?ro=0&kwop=7&keyword={}&order=14&asc=0&page={}&mode=s&jobsource=2018indexpoc'.format(keyword_trans, page_num)
+        url = 'https://www.104.com.tw/jobs/search/?ro=0&kwop=7&keyword={}&area={}&cat={}&ro={}&scmin={}&page={}&jobsource=2018indexpoc'.format(keyword_trans, ','.join(area_num_list), category, work_time, salary, page_num)
         response = requests.get(url)
         doc = pq(response.text)
         jobs_doc = doc("#js-job-content article.job-list-item")
@@ -71,7 +80,7 @@ def search():
             job_dict['company'] = {}
             job_dict['company']['name'] = job_doc('ul:nth-child(2) li:nth-child(2) a').text()
             job_dict['company']['link'] = job_doc('ul:nth-child(2) li:nth-child(2) a').attr('href')
-            job_dict['region'] = job_doc('ul.b-list-inline.b-clearfix.job-list-intro.b-content li:nth-child(1)').text()
+            job_dict['area'] = job_doc('ul.b-list-inline.b-clearfix.job-list-intro.b-content li:nth-child(1)').text()
             job_dict['salary'] = job_doc('div.b-block__left > div > span:nth-child(1)')
             job_dict['experience'] = job_doc('ul.b-list-inline.b-clearfix.job-list-intro.b-content li:nth-child(3)').text()
             job_dict['education'] = job_doc('ul.b-list-inline.b-clearfix.job-list-intro.b-content li:nth-child(5)').text()            
@@ -91,7 +100,7 @@ def search():
             job_dict['company'] = {}
             job_dict['company']['name'] = job_doc('.jbInfoin h4 a').text()
             job_dict['company']['link'] = job_doc('.jbInfoin h4 a').attr('href')
-            job_dict['region'] = job_doc('.jbControl .location a').text()
+            job_dict['area'] = job_doc('.jbControl .location a').text()
             job_dict['salary'] = job_doc('.needs').text().split('|')[0]
             job_dict['experience'] = job_doc('.needs').text().split('|')[1]
             job_dict['education'] = job_doc('.needs').text().split('|')[2]            
@@ -121,14 +130,14 @@ def search():
             job_dict['company'] = {}
             job_dict['company']['name'] = job_doc('.company a').text()
             job_dict['company']['link'] = job_doc('.company a').attr('href')
-            job_dict['region'] = job_doc('.area').text()
+            job_dict['area'] = job_doc('.area').text()
             job_dict['salary'] = job_doc('.sumbox p:nth-child(1)').text()
             job_dict['experience'] = job_doc('.exp').text()
             job_dict['education'] = job_doc('.edu').text().split('/ ')[-1]        
             job_list.append(job_dict)
     
-    print(job_list)
-    print(url)
+    print(len(job_list))
+    print(area_num_list)
     print(search_history)
     return redirect(url_for('results'))
     # return render_template('index.html')
@@ -146,7 +155,9 @@ def results():
     print('keyword_trans: ' + keyword_trans)
     return render_template('index.html', 
                             keyword=keyword, 
-                            region=region,
+                            keyword_trans=keyword_trans,
+                            area_list=area_list,
+                            area_dict=area_dict,
                             category=category,
                             job_list=pagination_job_list,
                             search_history=search_history,
@@ -160,11 +171,17 @@ def interview():
         return render_template('interview_results.html')
     elif request.method == 'POST':
         interview_list = []
-        global keyword_trans
-        keyword_trans
+        btn_query = request.values.get('interview-btn')
+        # global keyword_trans
+        # keyword_trans
         api_key = 'AIzaSyAjbXA-q2exro1mvZAGejN_QJ53JuH0O44'
         cx = '008688161330259078405:trwkkultef8'
-        url = 'https://www.googleapis.com/customsearch/v1?key={}&cx={}&lr=lang_zh-TW&q={}%20面試'.format(api_key, cx, keyword_trans)
+        if btn_query:
+            url = 'https://www.googleapis.com/customsearch/v1?key={}&cx={}&lr=lang_zh-TW&q={}%20面試'.format(api_key, cx, btn_query)
+        else:
+            global interview_keyword
+            interview_keyword = request.values.get('interview-keyword')
+            url = 'https://www.googleapis.com/customsearch/v1?key={}&cx={}&lr=lang_zh-TW&q={}%20面試'.format(api_key, cx, interview_keyword)
         response = requests.get(url)
         data = json.loads(response.text)
         interview_results = data['items']
@@ -181,7 +198,13 @@ def interview():
             # interview_dict['full_description'] = interview['pagemap']['metatags'][0]['og:description']
             interview_list.append(interview_dict)
         print(url)
-        return render_template('interview_results.html', interview_list=interview_list)
+        if btn_query:
+            return render_template('interview_results.html', interview_list=interview_list, keyword=keyword)
+        elif interview_keyword:
+            return render_template('interview_results.html', interview_list=interview_list, interview_keyword=interview_keyword)
+        else:
+            return render_template('interview_results.html', interview_list=interview_list)
+
 
 
 

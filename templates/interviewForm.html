@@ -1,8 +1,14 @@
-<form action="/interview" method="GET" class="keyword-form">
+<form action="/interview" method="POST" class="keyword-form">
   <div class="row">
     <!-- <label class="col-form-label" for="keyword_input">搜尋職缺：</label> -->
     <div class="col-sm-4">
-      <input type="text" class="form-control form-control-lg" name="keyword" value="{{ keyword }}" placeholder="搜尋面試經驗分享">
+      {% if keyword %}
+        <input type="text" class="form-control form-control-lg" name="interview-keyword" value="{{ keyword }}" placeholder="搜尋面試經驗分享">
+      {% elif interview_keyword %}
+        <input type="text" class="form-control form-control-lg" name="interview-keyword" value="{{ interview_keyword }}" placeholder="搜尋面試經驗分享">
+      {% else %}
+        <input type="text" class="form-control form-control-lg" name="interview-keyword" placeholder="搜尋面試經驗分享">
+      {% endif %}
     </div>
     <div class="col-sm-3">
       <select title="地區" name='region' class="selectpicker form-control form-control-lg" multiple data-live-search="true" data-max-options="5" data-width="100%" liveSearchPlaceholder="請選擇地區">
@@ -17,6 +23,6 @@
         <option data-divider="true"></option>
       </select>
     </div>
-    <button type="submit" class="btn btn-info search"><span>搜尋</span></button>
+    <button type="submit" class="btn btn-info search"><span>搜尋面試經驗</span></button>
   </div> 
 </form>

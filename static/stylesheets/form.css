@@ -18,9 +18,14 @@
   padding-left: 5px;
 }
 
+.col-sm-2 {
+  padding-right: 5px;
+  padding-left: 5px;
+}
+
 .search {
   margin-left: 5px;
-  width: 170px;
+  /* width: 170px; */
   letter-spacing: 20px;
 }
 

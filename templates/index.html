@@ -23,7 +23,7 @@
             <div class="card-body">
               <p>{{ job.date }}</p>
               <a href='{{ job.company.link }}' target="_blank">{{ job.company.name }}</a>
-              <p>{{ job.region }} | {{ job.experience }} | {{ job.education }}</p>
+              <p>{{ job.area }} | {{ job.experience }} | {{ job.education }}</p>
               <h5 class="card-title">簡介：</h5>
               <p class="card-text">{{ job.info[0:150] }}...</p>
               <p><a href="#" class="badge badge-secondary">{{ job.salary }}</a></p>
@@ -47,7 +47,7 @@
 
       {% if job_list %}
         <form action="/interview" method="POST">
-          <button type="submit" class="btn btn-info" value='{{ keyword }}' name='interview-btn'>面試經驗分享</button>
+          <button type="submit" class="btn btn-info" value='{{ keyword_trans }}' name='interview-btn'>面試經驗分享</button>
         </form>
       {% endif %}
     </div>
