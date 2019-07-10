@@ -29,6 +29,12 @@
   letter-spacing: 20px;
 }
 
+.interview-search {
+  margin-left: 5px;
+  /* width: 170px; */
+  letter-spacing: 5px;
+}
+
 .btn.search span{
   font-size: 18px;
   font-weight: 600;

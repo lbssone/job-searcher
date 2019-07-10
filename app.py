@@ -4,6 +4,7 @@ import requests
 from pyquery import PyQuery as pq
 import json
 from area import area_dict
+from data import work_time_dict, salary_dict
 
 app = Flask(__name__)
 job_list = []
@@ -14,6 +15,10 @@ keyword_trans = ''
 area_list = []
 area_num_list = []
 category = ''
+work_time = ''
+work_time_num = ''
+salary = ''
+salary_num = ''
 interview_keyword = ''
 search_history = {}
 
@@ -27,11 +32,11 @@ def get_key_word():
 
 @app.route('/')
 def index():
-    return render_template('index.html', search_history=search_history, area_dict=area_dict)
+    return render_template('index.html', search_history=search_history, area_dict=area_dict, work_time_dict=work_time_dict, salary_dict=salary_dict)
 
 @app.route('/search')
 def search():
-    global job_list, keyword, keyword_trans, area_list, area_num_list, category 
+    global job_list, keyword, keyword_trans, area_list, area_num_list, category, work_time,salary
     job_list.clear()
     area_list.clear()
     area_num_list.clear()
@@ -41,7 +46,9 @@ def search():
         area_num_list.append(area_dict[a])
     category = request.values.get('category')
     work_time = request.values.get('work-time')
+    work_time_num = work_time_dict[work_time]
     salary = request.values.get('salary')
+    salary_num = salary_dict[salary]
     for k in keyword:
         if k in char_dict:
             keyword_trans = keyword.replace(k, char_dict[k])
@@ -50,13 +57,19 @@ def search():
     if not keyword:
         keyword_trans = ''
 
-    search_url = 'http://127.0.0.1:5000/search?keyword=' + keyword_trans
+    search_url = 'http://127.0.0.1:5000/search?keyword={}&area={}&category={}&work-time={}&salary={}'.format(keyword_trans, '&area'.join(area_list), category, work_time, salary)
+    # search_url = 'http://127.0.0.1:5000/search?keyword=' + keyword_trans
 
+    condition = keyword
     if area_num_list:
-        condition = keyword + '+' + '+'.join(area_list)
-        search_url = '{}&area={}'.format(search_url, '&area='.join(area_num_list))
-    else:
-        condition = keyword
+        condition += '+' + '+'.join(area_list)
+    if category:
+        condition += '+' + category
+    if work_time:
+        condition += '+' + work_time
+    if salary:
+        condition += '+' + salary
+        # search_url = '{}&area={}'.format(search_url, '&area='.join(area_list))
     if category:
         search_url = '{}&category={}'.format(search_url, category)
     search_history[condition] = search_url
@@ -67,7 +80,7 @@ def search():
     # job_list = []
     # for page_num in range(1, int((total_page_104+1)/10)):
     for page_num in range(1, 5):
-        url = 'https://www.104.com.tw/jobs/search/?ro=0&kwop=7&keyword={}&area={}&cat={}&ro={}&scmin={}&page={}&jobsource=2018indexpoc'.format(keyword_trans, ','.join(area_num_list), category, work_time, salary, page_num)
+        url = 'https://www.104.com.tw/jobs/search/?ro=0&kwop=7&keyword={}&area={}&cat={}&ro={}&scmin={}&page={}&jobsource=2018indexpoc'.format(keyword_trans, ','.join(area_num_list), category, work_time_num, salary_num, page_num)
         response = requests.get(url)
         doc = pq(response.text)
         jobs_doc = doc("#js-job-content article.job-list-item")
@@ -159,6 +172,10 @@ def results():
                             area_list=area_list,
                             area_dict=area_dict,
                             category=category,
+                            work_time=work_time,
+                            work_time_dict=work_time_dict,
+                            salary=salary,
+                            salary_dict=salary_dict,
                             job_list=pagination_job_list,
                             search_history=search_history,
                             page=page,
