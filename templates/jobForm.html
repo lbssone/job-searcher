@@ -5,37 +5,33 @@
       <input type="text" class="form-control form-control-lg" name="keyword" id="keyword_input" value="{{ keyword }}" placeholder="搜尋職缺：請輸入關鍵字">
     </div>
     <div class="col-sm-2">
-      {% if area_list %}
         <select title="地區" name='area' class="selectpicker form-control form-control-lg" multiple data-live-search="true" data-max-options="5" data-width="100%" liveSearchPlaceholder="請選擇地區">
-      {% else %}
-        <select title="地區" name='area' class="selectpicker form-control form-control-lg" multiple data-live-search="true" data-max-options="5" data-width="100%" liveSearchPlaceholder="請選擇地區">
-      {% endif %}
-        <optgroup label="台北市">
-        <!-- <option data-divider="true"></option> -->
-          {% for area, value in area_dict.items() %}
-            {% if area in area_list %}
-              <option value="{{ area }}" selected="true">{{ area[3::] }}</option>
-            {% else %}
-              <option value="{{ area }}">{{ area[3::] }}</option>
-            {% endif %}
+          {% for area, districts in area_dict.items() %}
+            <optgroup label='{{ area }}'>
+              {% for district in districts %}
+                {% if district in area_list %}
+                  <option value="{{ district }}" selected="true">{{ district }}</option>
+                {% else %}
+                  <option value="{{ district }}">{{ district }}</option>
+                {% endif %}
+              {% endfor %}
+              <option data-divider="true"></option>
+            </optgroup>
           {% endfor %}
-        </optgroup>
-        <option>台中市</option>
-        <option data-divider="true"></option>
-        <option>台南市</option>
-        <option data-divider="true"></option>
-      </select>
+        </select>
     </div>
+  </div>
+  <div class="row">
     <div class="col-sm-2">
-        {% if category_list %}
-        <select title="職務類別" name='category' class="selectpicker form-control form-control-lg" multiple data-live-search="true" data-max-options="5" data-width="100%" liveSearchPlaceholder="請選擇職務類別">
-        {% else %}
-        <select title="職務類別" name='category' class="selectpicker form-control form-control-lg" multiple data-live-search="true" data-max-options="5" data-width="100%" liveSearchPlaceholder="請選擇職務類別">
-        {% endif %}
-
-        
+      <select title="職務類別" name='category' class="selectpicker form-control form-control-lg" multiple data-live-search="true" data-max-options="5" data-width="100%" liveSearchPlaceholder="請選擇職務類別">
+        {% for category, value in category_dict.items() %}
+          {% if category in category_list %}
+            <option value="{{ category }}" selected="true">{{ category }}</option>
+          {% else %}
+            <option value="{{ category }}">{{ category }}</option>
+          {% endif %}
+        {% endfor %}
       </select>
-      <input type="text" class="form-control form-control-lg" name="category" id="category_input" value="{{ request.form['category'] }}" placeholder="職務類別">
     </div>
     <!-- <div class="btn-group">
       <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -67,6 +63,15 @@
       </select>
     </div>
     <div class="col-sm-2">
+      <select title="薪水" class="selectpicker form-control form-control-lg" name="salary-type" id="salary-type" onchange="ChangecatList()">
+        <option value="時薪">時薪</option>
+        <option value="月薪">月薪</option>
+      </select>
+    </div>
+    <div class="col-sm-2">
+        <select placeholder="金額" class="form-control form-control-lg" name="salary" id="salary"></select>
+    </div>
+    <!-- <div class="col-sm-2">
       <select title="薪水" name='salary' class="selectpicker form-control form-control-lg">
         {% for salary_key, value in salary_dict.items() %}
           {% if salary_key == salary %}
@@ -76,7 +81,7 @@
           {% endif %}
         {% endfor %}
       </select>
-    </div>
+    </div> -->
     <button type="submit" class="btn btn-info search"><span>搜尋</span><i class="fas fa-search"></i>
 
     </button>
