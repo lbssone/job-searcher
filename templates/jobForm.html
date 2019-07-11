@@ -12,14 +12,11 @@
       {% endif %}
         <optgroup label="台北市">
         <!-- <option data-divider="true"></option> -->
-          <option value='台北市全選'>台北市全選</option>
-          <option value='信義區'>信義區</option>
-          <option value='大安區'>大安區</option>
           {% for area, value in area_dict.items() %}
             {% if area in area_list %}
-              <option value="{{ area }}" selected="true">{{ area }}</option>
+              <option value="{{ area }}" selected="true">{{ area[3::] }}</option>
             {% else %}
-              <option value="{{ area }}">{{ area }}</option>
+              <option value="{{ area }}">{{ area[3::] }}</option>
             {% endif %}
           {% endfor %}
         </optgroup>
@@ -28,16 +25,16 @@
         <option>台南市</option>
         <option data-divider="true"></option>
       </select>
-      <!-- <input 
-        type="text" 
-        class="form-control dropdown-toggle" 
-        name="region" 
-        id="region_input" 
-        value="{{ request.form['region'] }}" 
-        placeholder="地區" 
-        data-toggle="dropdown"> -->
     </div>
     <div class="col-sm-2">
+        {% if category_list %}
+        <select title="職務類別" name='category' class="selectpicker form-control form-control-lg" multiple data-live-search="true" data-max-options="5" data-width="100%" liveSearchPlaceholder="請選擇職務類別">
+        {% else %}
+        <select title="職務類別" name='category' class="selectpicker form-control form-control-lg" multiple data-live-search="true" data-max-options="5" data-width="100%" liveSearchPlaceholder="請選擇職務類別">
+        {% endif %}
+
+        
+      </select>
       <input type="text" class="form-control form-control-lg" name="category" id="category_input" value="{{ request.form['category'] }}" placeholder="職務類別">
     </div>
     <!-- <div class="btn-group">

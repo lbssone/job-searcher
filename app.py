@@ -3,7 +3,7 @@ from flask_paginate import Pagination, get_page_args
 import requests
 from pyquery import PyQuery as pq
 import json
-from area import area_dict
+from area import area_104, area_1111, area_518
 from data import work_time_dict, salary_dict
 
 app = Flask(__name__)
@@ -32,7 +32,7 @@ def get_key_word():
 
 @app.route('/')
 def index():
-    return render_template('index.html', search_history=search_history, area_dict=area_dict, work_time_dict=work_time_dict, salary_dict=salary_dict)
+    return render_template('index.html', search_history=search_history, area_dict=area_104, work_time_dict=work_time_dict, salary_dict=salary_dict)
 
 @app.route('/search')
 def search():
@@ -42,6 +42,7 @@ def search():
     area_num_list.clear()
     keyword = request.values.get('keyword')
     area_list = request.values.getlist('area')
+    category_list = request.values.getlist('category')
     for a in area_list:
         area_num_list.append(area_dict[a])
     category = request.values.get('category')
@@ -85,16 +86,19 @@ def search():
     # total_page_104 = int(doc_104('#job-jobList > script:nth-child(14)').text().split('totalPage":')[1].split(',')[0])
     # job_list = []
     # for page_num in range(1, int((total_page_104+1)/10)):
-    for page_num in range(1, 5):
+    for page_num in range(1, 6):
         url = 'https://www.104.com.tw/jobs/search/?ro=0&kwop=7&keyword={}&area={}&cat={}&ro={}&scmin={}&page={}&jobsource=2018indexpoc'.format(keyword_trans, ','.join(area_num_list), category, work_time_num, salary_num, page_num)
         response = requests.get(url)
         doc = pq(response.text)
         jobs_doc = doc("#js-job-content article.job-list-item")
         for job_doc in jobs_doc.items():
             job_dict = {}
-            job_dict['source'] = '104人力銀行'
+            job_dict['source'] = []
+            source = {}
+            source['site'] = '104人力銀行'
+            source['link'] = job_doc('.js-job-link').attr('href')
+            job_dict['source'].append(source)
             job_dict['title'] = job_doc('.js-job-link').text()
-            job_dict['link'] = job_doc('.js-job-link').attr('href')
             job_dict['date'] = job_doc('.b-tit span.b-tit__date').text()
             job_dict['info'] = job_doc('.job-list-item__info').text()
             job_dict['company'] = {}
@@ -106,13 +110,13 @@ def search():
             job_dict['education'] = job_doc('ul.b-list-inline.b-clearfix.job-list-intro.b-content li:nth-child(5)').text()            
             job_list.append(job_dict)
     # 1111
-    count = 0
+    count = 1
     while count <= 5:
         response_1111 = requests.get('https://www.1111.com.tw/job-bank/job-index.asp?si=1&ss=s&ks={}&page={}'.format(keyword_trans, count))
         doc = pq(response_1111.text)
         jobs_doc = doc('#jobResult #record_{} li.digest'.format(count))
         for job_doc in jobs_doc.items():
-            source = '1111人力銀行'
+            site = '1111人力銀行'
             title = job_doc('.jbInfoin h3 a').text()
             link = job_doc('.jbInfoin h3 a').attr('href')
             date = job_doc('.jbControl .date').text()
@@ -126,15 +130,24 @@ def search():
             exist = False
             for job in job_list:
                 if job['title'] == title and job['company']['name'] == company_name and job['area'] == area:
-                    job['source'] += ' ' + source
-                    job['link'] += ' ' + link
+                    source_list = []
+                    for source in job['source']:
+                        source_list.append(source['site'])
+                    if site not in source_list:
+                        new_source = {}
+                        new_source['site'] = site
+                        new_source['link'] = link
+                        job['source'].append(new_source)
                     exist = True
                     break
-            if not exist:
+            if exist == False:
                 job_dict = {}
-                job_dict['source'] = source
+                job_dict['source'] = []
+                source = {}
+                source['site'] = site
+                source['link'] = link
+                job_dict['source'].append(source)
                 job_dict['title'] = title
-                job_dict['link'] = link
                 job_dict['date'] = date
                 job_dict['info'] = info
                 job_dict['company'] = {}
@@ -162,7 +175,7 @@ def search():
         doc = pq(response.text)
         jobs_doc = doc("#listContent ul")
         for job_doc in jobs_doc.items():
-            source = '518人力銀行'
+            site = '518人力銀行'
             title = job_doc('.title a').text()
             link = job_doc('.title a').attr('href')
             date = job_doc('.date').text()
@@ -176,15 +189,24 @@ def search():
             exist = False
             for job in job_list:
                 if job['title'] == title and job['company']['name'] == company_name and job['area'] == area:
-                    job['source'] += ' ' + source
-                    job['link'] += ' ' + link
+                    source_list = []
+                    for source in job['source']:
+                        source_list.append(source['site'])
+                    if site not in source_list:
+                        new_source = {}
+                        new_source['site'] = site
+                        new_source['link'] = link
+                        job['source'].append(new_source)
                     exist = True
                     break
-            if not exist:
+            if exist == False:
                 job_dict = {}
-                job_dict['source'] = source
+                job_dict['source'] = []
+                source = {}
+                source['site'] = site
+                source['link'] = link
+                job_dict['source'].append(source)
                 job_dict['title'] = title
-                job_dict['link'] = link
                 job_dict['date'] = date
                 job_dict['info'] = info
                 job_dict['company'] = {}
@@ -217,7 +239,7 @@ def results():
                             keyword=keyword, 
                             keyword_trans=keyword_trans,
                             area_list=area_list,
-                            area_dict=area_dict,
+                            area_dict=area_104,
                             category=category,
                             work_time=work_time,
                             work_time_dict=work_time_dict,
