@@ -64,24 +64,19 @@
     </div>
     <div class="col-sm-2">
       <select title="薪水" class="selectpicker form-control form-control-lg" name="salary-type" id="salary-type" onchange="ChangecatList()">
-        <option value="時薪">時薪</option>
-        <option value="月薪">月薪</option>
+        {% for type, v in salary_type_dict.items() %}
+          {# {% if type == salary_type %}
+            <option value="{{ type }}" selected="true">{{ type }}</option>
+          {% else %} #}
+            <option value="{{ type }}">{{ type }}</option>
+          {# {% endif %} #}
+        {% endfor %}
       </select>
     </div>
     <div class="col-sm-2">
         <select placeholder="金額" class="form-control form-control-lg" name="salary" id="salary"></select>
     </div>
-    <!-- <div class="col-sm-2">
-      <select title="薪水" name='salary' class="selectpicker form-control form-control-lg">
-        {% for salary_key, value in salary_dict.items() %}
-          {% if salary_key == salary %}
-            <option value='{{ salary_key }}' selected='true'>{{ salary_key }}</option>
-          {% else %}
-            <option value='{{ salary_key }}'>{{ salary_key }}</option>
-          {% endif %}
-        {% endfor %}
-      </select>
-    </div> -->
+    
     <button type="submit" class="btn btn-info search"><span>搜尋</span><i class="fas fa-search"></i>
 
     </button>

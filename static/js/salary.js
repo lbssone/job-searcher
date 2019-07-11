@@ -1,4 +1,5 @@
 let catAndActs = {};
+catAndActs['不限'] = [{'name': '不限', 'value': '不限'}]
 catAndActs['時薪'] = [{'name':'150以上', 'value': '150'}, {'name': '200以上', 'value': '200'}, {'name': '250以上','value': '250'}, {'name': '300以上','value': '300'}];
 catAndActs['月薪'] = [{'name': '3萬以上', 'value': '30000'}, {'name': '4萬以上', 'value': '40000'}, {'name': '5萬以上', 'value': '50000'}, {'name': '6萬以上', 'value': '60000'}];
 

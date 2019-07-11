@@ -14,28 +14,7 @@
   {% endif %}
   <div class='job-results-block'>
     <div class='job-results'>
-      {% if job_list %}
-        {% for job in job_list %}
-          <div class="card">
-            <div class="card-header">
-              <h4>{{ job.title }}</h4>
-            </div>
-            <div class="card-body">
-              <p>{{ job.date }}</p>
-              <a href='{{ job.company.link }}' target="_blank">{{ job.company.name }}</a>
-              <p>{{ job.area }} | {{ job.experience }} | {{ job.education }}</p>
-              <h5 class="card-title">簡介：</h5>
-              <p class="card-text">{{ job.info[0:150] }}...</p>
-              <p><a href="#" class="badge badge-secondary">{{ job.salary }}</a></p>
-              {% for source in job.source %}
-                <a href="{{ source.link }}" class="btn btn-info" target="_blank">前往{{ source.site }}應徵</a>
-              {% endfor %}
-              <button type="button" class="btn btn-outline-info">收藏職缺</button>
-            </div>
-          </div>
-        {% endfor %}
-        {{ pagination.links }}
-      {% endif %}
+      
     </div>
     <div class="search-history">
       <div class="card">
@@ -47,11 +26,7 @@
         </div>
       </div>
 
-      {% if job_list %}
-        <form action="/interview" method="POST">
-          <button type="submit" class="btn btn-info" value='{{ keyword_trans }}' name='interview-btn'><span>{{ keyword }} </span>面試經驗分享</button>
-        </form>
-      {% endif %}
+
     </div>
   </div>
 

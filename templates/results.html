@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block head %}
+  
+{% endblock %}
+
+{% block body %}
+  {% include 'jobForm.html' %}
+  <div style="margin-bottom: 3rem">
+    {% if condition %}
+      {% for c in condition.split('+') %}
+      <h5 style="display:inline"><span class="badge badge-secondary">{{ c }}</span></h5>
+      {% endfor %}
+    {% endif %}
+  </div>
+
+  {% if pagination %}
+    <div>
+      {{ pagination.links }}
+    </div>
+  {% endif %}
+  <div class='job-results-block'>
+    <div class='job-results'>
+      {% if job_list %}
+        {% for job in job_list %}
+          <div class="card">
+            <div class="card-header">
+              <h4>{{ job.title }}</h4>
+            </div>
+            <div class="card-body">
+              {% if job.date != '' %}
+                <p>{{ job.date }}</p>
+              {% else %}
+                <p><i class="fas fa-thumbs-up" style="color:lightcoral"></i></p>
+              {% endif %}
+              <a href='{{ job.company.link }}' target="_blank">{{ job.company.name }}</a>
+              <p>{{ job.area }} | {{ job.experience }} | {{ job.education }}</p>
+              <h5 class="card-title">簡介：</h5>
+              <p class="card-text">{{ job.info[0:150] }}...</p>
+              <p><a href="#" class="badge badge-secondary">{{ job.salary }}</a></p>
+              {% for source in job.source %}
+                <a href="{{ source.link }}" class="btn btn-info" target="_blank">前往{{ source.site }}應徵</a>
+              {% endfor %}
+            </div>
+          </div>
+        {% endfor %}
+        {{ pagination.links }}
+      {% else %}
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">很抱歉，沒有符合此搜尋條件的結果！</h5>
+            <br>
+            <h6 class="card-subtitle mb-2 text-muted">◆ 建議調整搜尋條件重新查詢</h6>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+    <div class="search-history">
+      <div class="card">
+        <div class="card-body">
+          <h6 class="card-title">最近搜尋條件：</h6>
+          {% for history_condition, history_link in search_history.items() %}
+            <p><a href='{{ history_link }}' class="card-text">{{ history_condition }}</a></p>
+          {% endfor %}
+        </div>
+      </div>
+
+      {% if job_list %}
+        <form action="/interview" method="POST">
+          <button type="submit" class="btn btn-info" value='{{ keyword_trans }}' name='interview-btn'><span><strong>{{ keyword }}</strong>&nbsp&nbsp</span>面試經驗分享</button>
+        </form>
+      {% endif %}
+    </div>
+  </div>
+
+{% endblock %}
