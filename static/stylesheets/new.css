@@ -35,30 +35,20 @@ input[type="submit"] {
 	-ms-transition: 0.5s all;
 }
 
-/* h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-	margin: 0;
-	font-family: 'Work Sans', sans-serif;
-} */
-
-p {
+/* p {
 	margin: 0;
 	letter-spacing: 1px;
 	font-size: 0.9em;
-}
+} */
 
 ul {
 	margin: 0;
 	padding: 0;
 }
 
-label {
+/* label {
 	margin: 0;
-}
+} */
 
 
 /*-- header --*/
