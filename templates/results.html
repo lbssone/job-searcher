@@ -37,7 +37,7 @@
               <p>{{ job.area }} | {{ job.experience }} | {{ job.education }}</p>
               <h5 class="card-title">簡介：</h5>
               <p class="card-text">{{ job.info[0:150] }}...</p>
-              <p><a href="#" class="badge badge-secondary">{{ job.salary }}</a></p>
+              <p><a href="#" class="badge badge-secondary">{{ job.wage }}</a></p>
               {% for source in job.source %}
                 <a href="{{ source.link }}" class="btn btn-info" target="_blank">前往{{ source.site }}應徵</a>
               {% endfor %}
