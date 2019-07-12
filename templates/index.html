@@ -14,19 +14,24 @@
   {% endif %}
   <div class='job-results-block'>
     <div class='job-results'>
-      
-    </div>
-    <div class="search-history">
-      <div class="card">
-        <div class="card-body">
-          <h6 class="card-title">最近搜尋條件：</h6>
-          {% for history_condition, history_link in search_history.items() %}
-            <p><a href='{{ history_link }}' class="card-text">{{ history_condition }}</a></p>
-          {% endfor %}
-        </div>
-      </div>
+      <div id="features" class="offset">
+          <div class="narrow text-center">
 
-
+           
+          </div>
+          <!-- <div class="search-history">
+              <div class="card">
+                <div class="card-body">
+                  <h6 class="card-title">最近搜尋條件：</h6>
+                  {% for history_condition, history_link in search_history.items() %}
+                    <p><a href='{{ history_link }}' class="card-text">{{ history_condition }}</a></p>
+                  {% endfor %}
+                </div>
+              </div>
+        
+        
+            </div>
+        </div> -->
     </div>
   </div>
 
