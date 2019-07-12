@@ -34,13 +34,13 @@
                             <i class="fas fa-thumbs-up" style="color:rgb(57, 143, 214); font-size: 25px; padding-bottom:2px"></i>
                             {% endif %}
                         </p>
-                        <p><a href='{{ job.company.link }}' target="_blank">{{ job.company.name }}</a></p>
+                        <p style="font-size:16px"><a href='{{ job.company.link }}' target="_blank">{{ job.company.name }}</a></p>
                         <p style="font-size:16px">{{ job.area }} | {{ job.experience }} | {{ job.education }}</p>
-                        <p style="font-size:16px"><span class="m_2">簡介 : </span>{{ job.info }}...</p>
-                        <p><a href="#" class="badge badge-secondary">{{ job.wage }}</a></p>
+                        <p style="font-size:16px"><span class="m_2">簡介 : </span>{{ job.info[1:150] }}...</p>
+                        <p><a href="#" class="badge badge-secondary" style="font-size: 13px; margin-bottom: 1rem">{{ job.wage }}</a></p>
                         <ul class="links_bottom">
                           {% for source in job.source %}
-                            <li class="btn btn-info"><a href="{{ source.link }}" style="color: white"><span style="font-size: 16px">前往{{ source.site }}應徵&nbsp&nbsp<i class="fa fa-caret-right icon_1" style="color: white"></i></span></a></li>
+                            <li class="btn btn-info" style="margin-right: 2%"><a href="{{ source.link }}" style="color: white"><span style="font-size: 16px">前往{{ source.site }}應徵&nbsp&nbsp<i class="fa fa-caret-right icon_1" style="color: white"></i></span></a></li>
                           {% endfor %}
                         </ul>
                       </div>
@@ -52,13 +52,13 @@
                       <h5 style="font-weight:600">很抱歉，沒有符合此搜尋條件的結果！</h5>
                       <br>
                       <h6>◆ 建議調整搜尋條件重新查詢</h6>
-                    {% endif %}
+                  {% endif %}
                 </div>
             </div>
             <div class="col-md-3 job_info_right">
                 {% if job_list %}
                   <form action="/interview" method="POST" style="margin-bottom:1rem">
-                    <button type="submit" class="btn btn-outline-info" value='{{ keyword_trans }}' name='interview-btn'><span><strong>{{ keyword }}</strong>&nbsp&nbsp</span>面試經驗分享</button>
+                    <button type="submit" class="btn btn-outline-info" value='{{ keyword_trans }}' name='interview-btn'><span>前往 <strong>{{ keyword }}</strong>&nbsp</span>面試經驗分享 <span style="font-size: 17px">&raquo;</span></button>
                   </form>
                 {% endif %}
                 <div class="col_3 permit">
