@@ -337,8 +337,13 @@ def interview():
         else:
             return render_template('interview_results.html', interview_list=interview_list)
 
+@app.route('/test')
+def test():
+    return render_template('examination.html')
 
-
+@app.route('/resume')
+def resume():
+    return render_template('resume.html')
 
 if __name__ == "__main__":
     app.run(port=5000, debug = True)
