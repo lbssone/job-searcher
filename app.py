@@ -122,10 +122,10 @@ def search():
     # total_page_104 = int(doc_104('#job-jobList > script:nth-child(14)').text().split('totalPage":')[1].split(',')[0])
     # for page_num in range(1, int((total_page_104+1)/10)):
     for page_num in range(1, 4):
-        url = 'https://www.104.com.tw/jobs/search/?ro=0&kwop=7&keyword={}&area={}&cat={}&ro={}&sctp={}&scmin={}&page={}&jobsource=2018indexpoc'.format(keyword_trans, ','.join(area_num_104), ','.join(cat_num_104), work_time_104, salary_type_104, salary, page_num)
+        url = 'https://www.104.com.tw/jobs/search/?kwop=7&keyword={}&area={}&cat={}&ro={}&sctp={}&scmin={}&page={}&jobsource=2018indexpoc'.format(keyword_trans, ','.join(area_num_104), ','.join(cat_num_104), work_time_104, salary_type_104, salary, page_num)
         response = requests.get(url)
         doc = pq(response.text)
-        jobs_doc = doc("#js-job-content article.job-list-item")
+        jobs_doc = doc("#js-job-content article.b-block--top-bord.job-list-item.b-clearfix.js-job-item")
         for job_doc in jobs_doc.items():
             job_dict = {}
             job_dict['source'] = []

@@ -1392,17 +1392,17 @@ span.icon_text:hover {
 }
 
 .location_box1 h6 {
-	font-size: 1.3em;
+	font-size: 1.5em;
 }
 
 .location_box1 p,
 .jobs_right p {
-	line-height: 1.9em;
+	/* line-height: 1.9em; */
 	color: #666;
 	margin: 1em 0;
 }
 
-.location_box1 h6 a,
+.location_box1 h6,
 h6.title a {
 	color: #2d2d2d;
 	text-transform: capitalize;
@@ -1519,7 +1519,7 @@ p.description a {
 	border-bottom: 1px solid #e6e6e6;
 }
 
-.permit h3,
+.permit h4,
 .experience h3,
 h5.widget-title {
 	font-size: 1.4em;
@@ -1598,7 +1598,7 @@ ul.list_2 li a:hover {
 }
 
 .inner_content_info_agileits {
-	padding: 2em 0;
+	padding: 1.5em 0;
 }
 
 .tab_grid.last {

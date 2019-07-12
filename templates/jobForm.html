@@ -29,7 +29,7 @@
 					</div>
 				</div>
 				<div class="row">
-					<div class="col-sm-4">
+					<div class="col-sm-5">
 						<select title="職務類別" name='category' class="selectpicker form-control form-control-md" multiple data-live-search="true" data-max-options="5" data-width="100%" liveSearchPlaceholder="請選擇職務類別">
 							{% for category, value in category_dict.items() %}
 								{% if category in category_list %}
@@ -40,24 +40,6 @@
 							{% endfor %}
 						</select>
 					</div>
-					<!-- <div class="btn-group">
-						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-							Action <span class="caret"></span>
-						</button>
-						<ul class="dropdown-menu">
-							<form>
-									<div class="form-group">
-										<input type="email" class="form-control" id="inputEmail1" placeholder="Email">
-									</div>
-									<div class="form-group">
-										<input type="password" class="form-control" id="inputPassword1" placeholder="Password">
-									</div>
-									<div class="form-group">
-										<button type="submit" class="btn btn-default">Sign in</button>
-									</div>
-							</form>
-						</ul>
-					</div> -->
 					<div class="col-sm-2">
 						<select title="全職/兼職" name='work-time' class="selectpicker form-control form-control-md">
 							{% for work_time_key, value in work_time_dict.items() %}
@@ -80,13 +62,22 @@
 							{% endfor %}
 						</select>
 					</div>
-					<div class="col-sm-2">
+					<div class="col-sm-3">
 							<select placeholder="金額" class="form-control form-control-md" name="salary" id="salary"></select>
 					</div>
 					</button>
 				</div> 
 			</form>	
-      </div>
+			
+			<div style="margin-top:20px">
+				{% if condition %}
+				<h6 style="display:inline">搜尋條件：</h6>
+        {% for c in condition.split('+') %}
+        <h5 style="display:inline"><span class="badge badge-secondary">{{ c }}</span></h5>
+				{% endfor %}
+				{% endif %}
+			</div>
+    </div>
   </div>		
 	</div> 
 </div>

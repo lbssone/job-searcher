@@ -1,28 +1,21 @@
-<form action="/interview" method="POST" class="keyword-form">
-  <div class="row">
-    <!-- <label class="col-form-label" for="keyword_input">搜尋職缺：</label> -->
-    <div class="col-sm-4">
-      {% if keyword %}
-        <input type="text" class="form-control form-control-lg" name="interview-keyword" value="{{ keyword }}" placeholder="搜尋面試經驗分享">
-      {% elif interview_keyword %}
-        <input type="text" class="form-control form-control-lg" name="interview-keyword" value="{{ interview_keyword }}" placeholder="搜尋面試經驗分享">
-      {% else %}
-        <input type="text" class="form-control form-control-lg" name="interview-keyword" placeholder="搜尋面試經驗分享">
-      {% endif %}
-    </div>
-    <div class="col-sm-3">
-      <select title="地區" name='region' class="selectpicker form-control form-control-lg" multiple data-live-search="true" data-max-options="5" data-width="100%" liveSearchPlaceholder="請選擇地區">
-        <optgroup label="台北市">
-        <!-- <option data-divider="true"></option> -->
-          <option value='信義區'>信義區</option>
-          <option value='大安區'>大安區</option>
-        </optgroup>
-        <option>台中市</option>
-        <option data-divider="true"></option>
-        <option>台南市</option>
-        <option data-divider="true"></option>
-      </select>
-    </div>
-    <button type="submit" class="btn btn-info interview-search"><i class="fas fa-search"></i><span>搜尋面試經驗</span></button>
-  </div> 
-</form>
+<div class="container">
+  <div style="width: 90%; margin: 0 auto">
+    <form action="/interview" method="POST" class="keyword-form" style="margin-top:6rem">
+      <div class="row">
+        <!-- <label class="col-form-label" for="keyword_input">搜尋職缺：</label> -->
+        <div class="col-sm-8">
+          {% if keyword %}
+            <input type="text" class="form-control form-control-lg" name="interview-keyword" value="{{ keyword }}" placeholder="搜尋面試經驗分享">
+          {% elif interview_keyword %}
+            <input type="text" class="form-control form-control-lg" name="interview-keyword" value="{{ interview_keyword }}" placeholder="搜尋面試經驗分享">
+          {% else %}
+            <input type="text" class="form-control form-control-lg" name="interview-keyword" placeholder="搜尋面試經驗分享">
+          {% endif %}
+        </div>
+        <div class="col-sm-4">
+          <button type="submit" class="btn btn-lg btn-info interview-search" style="letter-spacing: 8px"><i class="fas fa-search"></i><span>搜尋面試經驗</span></button>
+        </div>
+      </div> 
+    </form>
+  </div>
+</div>
