@@ -1,14 +1,13 @@
 <div id="course" class="offset" style="margin-top:5rem"><!---offset那個class是為了保留navbar那個高度的空間-->
   <div class="jumbotron">
-  <div class="col-12 narrow text-center">
-		<div style="width:90%; margin: 0 auto">
-			<form action="/search" method="GET" class="keyword-form">
-				<div class="row">
-					<!-- <label class="col-form-label" for="keyword_input">搜尋職缺：</label> -->
-					<div class="col-sm-5">
-						<input type="text" class="form-control form-control-md" name="keyword" id="keyword_input" value="{{ keyword }}" placeholder="搜尋職缺：請輸入關鍵字">
-					</div>
-					<div class="col-sm-4">
+		<div class="narrow text-center">
+			<div style="width:90%; margin: 0 auto">
+				<form action="/search" method="GET" class="keyword-form">
+					<div class="row">
+						<div class="col-sm-5">
+							<input type="text" class="form-control form-control-md" name="keyword" id="keyword_input" value="{{ keyword }}" placeholder="搜尋職缺：請輸入關鍵字">
+						</div>
+						<div class="col-sm-4">
 							<select title="地區（至多五項）" name='area' class="selectpicker form-control form-control-md" multiple data-live-search="true" data-max-options="5" data-width="100%" liveSearchPlaceholder="請選擇地區">
 								{% for area, districts in area_dict.items() %}
 									<optgroup label='{{ area }}'>
@@ -23,61 +22,60 @@
 									</optgroup>
 								{% endfor %}
 							</select>
+						</div>
+						<div class="col-sm-3">
+							<button type="submit" class="btn btn-info search" style="width:100%; letter-spacing: 20px"><span>搜尋</span><i class="fas fa-search"></i></button>
+						</div>
 					</div>
-					<div class="col-sm-3">
-						<button type="submit" class="btn btn-info search" style="width:100%; letter-spacing: 20px"><span>搜尋</span><i class="fas fa-search"></i>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-sm-5">
-						<select title="職務類別（至多五項）" name='category' class="selectpicker form-control form-control-md" multiple data-live-search="true" data-max-options="5" data-width="100%" liveSearchPlaceholder="請選擇職務類別">
-							{% for category, value in category_dict.items() %}
-								{% if category in category_list %}
-									<option value="{{ category }}" selected="true">{{ category }}</option>
-								{% else %}
-									<option value="{{ category }}">{{ category }}</option>
+					<div class="row">
+						<div class="col-sm-5">
+							<select title="職務類別（至多五項）" name='category' class="selectpicker form-control form-control-md" multiple data-live-search="true" data-max-options="5" data-width="100%" liveSearchPlaceholder="請選擇職務類別">
+								{% for category, value in category_dict.items() %}
+									{% if category in category_list %}
+										<option value="{{ category }}" selected="true">{{ category }}</option>
+									{% else %}
+										<option value="{{ category }}">{{ category }}</option>
+									{% endif %}
+								{% endfor %}
+							</select>
+						</div>
+						<div class="col-sm-2">
+							<select title="全職/兼職" name='work-time' class="selectpicker form-control form-control-md">
+								{% for work_time_key, value in work_time_dict.items() %}
+									{% if work_time_key == work_time %}
+										<option value="{{ work_time_key }}" selected="true">{{ work_time_key }}</option>
+									{% else %}
+										<option value="{{ work_time_key }}">{{ work_time_key }}</option>
 								{% endif %}
 							{% endfor %}
-						</select>
-					</div>
-					<div class="col-sm-2">
-						<select title="全職/兼職" name='work-time' class="selectpicker form-control form-control-md">
-							{% for work_time_key, value in work_time_dict.items() %}
-								{% if work_time_key == work_time %}
-									<option value="{{ work_time_key }}" selected="true">{{ work_time_key }}</option>
-								{% else %}
-									<option value="{{ work_time_key }}">{{ work_time_key }}</option>
-							{% endif %}
-						{% endfor %}
-						</select>
-					</div>
-					<div class="col-sm-2">
-						<select title="薪水" class="selectpicker form-control form-control-md" name="salary-type" id="salary-type" onchange="ChangecatList()">
-							{% for type, v in salary_type_dict.items() %}
-								{# {% if type == salary_type %}
-									<option value="{{ type }}" selected="true">{{ type }}</option>
-								{% else %} #}
-									<option value="{{ type }}">{{ type }}</option>
-								{# {% endif %} #}
-							{% endfor %}
-						</select>
-					</div>
-					<div class="col-sm-3">
-							<select placeholder="金額" class="form-control form-control-md" name="salary" id="salary"></select>
-					</div>
-					</button>
-				</div> 
-			</form>	
-			
-			<div style="margin-top:20px">
-				{% if condition %}
-				<h6 style="display:inline">搜尋條件：</h6>
-        {% for c in condition.split('+') %}
-        <h5 style="display:inline"><span class="badge badge-secondary">{{ c }}</span></h5>
-				{% endfor %}
-				{% endif %}
-			</div>
-    </div>
-  </div>		
+							</select>
+						</div>
+						<div class="col-sm-2">
+							<select title="薪水" class="selectpicker form-control form-control-md" name="salary-type" id="salary-type" onchange="ChangecatList()">
+								{% for type, v in salary_type_dict.items() %}
+									{# {% if type == salary_type %}
+										<option value="{{ type }}" selected="true">{{ type }}</option>
+									{% else %} #}
+										<option value="{{ type }}">{{ type }}</option>
+									{# {% endif %} #}
+								{% endfor %}
+							</select>
+						</div>
+						<div class="col-sm-3">
+								<select placeholder="金額" class="form-control form-control-md" name="salary" id="salary"></select>
+						</div>
+					</div> 
+				</form>	
+				
+				<div style="margin-top:20px">
+					{% if condition %}
+					<h6 style="display:inline">搜尋條件：</h6>
+					{% for c in condition.split('+') %}
+					<h5 style="display:inline"><span class="badge badge-secondary">{{ c }}</span></h5>
+					{% endfor %}
+					{% endif %}
+				</div>
+    	</div>
+  	</div>		
 	</div> 
 </div>
