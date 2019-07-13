@@ -17,9 +17,9 @@
                 <div class="col-md-9">
                 </div>
                 <div class="col-md-3">
-                  <div class="permit">
+                  <div class="search-history-block">
                     <h4>最近搜尋條件：</h4>
-                    <ul class="list_2">
+                    <ul class="search-history">
                       {% for history_condition, history_link in search_history.items() %}
                         <li style="margin-bottom: 10px"><a href="{{ history_link }}">{{ history_condition }}</a></li>
                       {% endfor %}
