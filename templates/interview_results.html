@@ -1,22 +1,19 @@
 {% extends 'base.html' %}
 {% block body %}
   {% include 'interviewForm.html' %}
-  <div class="inner_content_info_agileits">
-      <div class="container">
-          <div style="width: 90%; margin: 0 auto">
-            {% if interview_list %}
-              {% for interview in interview_list %}
-                <div style="margin-bottom: 30px; 	box-shadow: 0 0px 1px rgb(168, 168, 168), 0 1px 2px rgba(0, 0, 0, .24);
-                ; border-radius: 5px; padding:20px">
-                  <h5><a href='{{ interview.link }}' target='_blank' style="color:rgb(51, 51, 51); font-weight: 600">{{ interview.title }}</a></h5>
-                  <hr>
-                  <a href='{{ interview.link }}' target='_blank' style="color:rgb(4, 101, 165)">{{ interview.link[0:50] }}...</a>
-                  <p><span style="color:darkgrey">{{ interview.date }}</span></p>
-                  <p style="font-size: 18px; margin-top: 10px">{{ interview.snippet[0:150] }}...</p>
-                </div>
-                {% endfor %}
-              {% endif %}
-          </div>
+  <div class="container">
+      <div class="interview-results">
+        {% if interview_list %}
+          {% for interview in interview_list %}
+            <div class="interview-result">
+              <h5><a href='{{ interview.link }}' target='_blank' class="interview-title">{{ interview.title }}</a></h5>
+              <hr>
+              <a href='{{ interview.link }}' target='_blank' class="interview-url">{{ interview.link[0:50] }}...</a>
+              <p><span class="interview-date">{{ interview.date }}</span></p>
+              <p class="interview-info">{{ interview.snippet[0:150] }}...</p>
+            </div>
+            {% endfor %}
+          {% endif %}
       </div>
   </div>
 {% endblock %}

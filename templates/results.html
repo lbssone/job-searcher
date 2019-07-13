@@ -13,22 +13,22 @@
         {% endif %} 
         {% if job_list %}
           {% for job in job_list %}
-            <div class="job-result" style="margin-top: 2.5rem; margin-bottom: 3rem">
-              <h6 style="display:inline-block; border-left: 6px solid #6f7070; padding: 0 0 0 8px">{{ job.title }}</h6>
-              <p style="display:inline-block; margin-left: 8px">
+            <div class="job-result job-result-1">
+              <h6 class="job-title">{{ job.title }}</h6>
+              <p class="job-date">
                   {% if job.date != '' %}
                     {{ job.date }}
                   {% else %}
                   <i class="fas fa-thumbs-up" style="color:rgb(57, 143, 214); font-size: 25px; padding-bottom:2px"></i>
                   {% endif %}
               </p>
-              <p style="font-size:16px"><a href='{{ job.company.link }}' target="_blank">{{ job.company.name }}</a></p>
-              <p style="font-size:16px">{{ job.area }} | {{ job.experience }} | {{ job.education }}</p>
-              <p style="font-size:16px"><span class="m_2">簡介 : </span>{{ job.info[1:250] }}...</p>
-              <p><a href="#" class="badge badge-secondary" style="font-size: 14px; margin-bottom: 0.8rem">{{ job.wage }}</a></p>
+              <p class="job-content"><a href='{{ job.company.link }}' target="_blank">{{ job.company.name }}</a></p>
+              <p class="job-content">{{ job.area }} | {{ job.experience }} | {{ job.education }}</p>
+              <p class="job-content"><span class="m_2">簡介 : </span>{{ job.info[1:250] }}...</p>
+              <p><a href="#" class="badge badge-secondary" class="wage">{{ job.wage }}</a></p>
               <ul class="links_bottom">
                 {% for source in job.source %}
-                  <li class="btn btn-info" style="margin-right: 2%"><a href="{{ source.link }}" style="color: white" target="_blank"><span style="font-size: 16px">前往{{ source.site }}應徵&nbsp&nbsp<i class="fa fa-caret-right icon_1" style="color: white"></i></span></a></li>
+                  <li class="btn btn-info source-btn"><a href="{{ source.link }}" style="color: white" target="_blank"><span style="font-size: 16px">前往{{ source.site }}應徵&nbsp&nbsp<i class="fa fa-caret-right icon_1" style="color: white"></i></span></a></li>
                 {% endfor %}
               </ul>
             </div>
@@ -43,7 +43,7 @@
     </div>
     <div class="col-md-3">
         {% if job_list %}
-          <form action="/interview" method="POST" style="margin-bottom:1rem">
+          <form action="/interview" method="POST" class="go-to-interview">
             <button type="submit" class="btn btn-outline-info" value='{{ keyword_trans }}' name='interview-btn'><span>前往 <strong>{{ keyword }}</strong>&nbsp</span>面試經驗分享 <span style="font-size: 17px">&raquo;</span></button>
           </form>
         {% endif %}
@@ -51,7 +51,7 @@
           <h4>最近搜尋條件：</h4>
           <ul class="search-history">
             {% for history_condition, history_link in search_history.items() %}
-              <li style="margin-bottom: 5px"><a href="{{ history_link }}">{{ history_condition }}</a></li>
+              <li class="history"><a href="{{ history_link }}">{{ history_condition }}</a></li>
             {% endfor %}
           </ul>
         </div>
