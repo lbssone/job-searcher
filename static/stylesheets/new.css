@@ -11,18 +11,18 @@ h4.title {
 	text-align: center;
 	text-shadow: 0 1px 2px rgba(0, 0, 0, 0.33);
 }
-.inner_sec_grids_info_w3ls {
+.margin-top-2 {
 	margin-top: 2em;
 }
-.location_box1 h6 {
+.job-result h6 {
 	font-size: 1.5em;
 }
-.location_box1 p {
+.job-result p {
 	/* line-height: 1.9em; */
 	color: #666;
 	margin: 1em 0;
 }
-.location_box1 h6 {
+.job-result h6 {
 	color: #2d2d2d;
 	text-transform: capitalize;
 	font-weight: 600;
@@ -53,12 +53,50 @@ ul.search-history li a {
 ul.search-history li a:hover {
 	color: rgb(26, 195, 224);
 }
-.inner_content_info_agileits {
+/* .inner_content_info_agileits {
 	padding: 1.5em 0;
-}
+} */
+
+/* .search-result-title {
+  padding-top: 1.5em 0;
+  text-align: center;
+} */
 h6.title {
 	font-size: 1em;
 	margin-bottom: 5px;
 	font-weight: 600;
 	text-transform: capitalize;
+}
+.interview-search {
+  letter-spacing: 8px;
+}
+.subfunction {
+  margin-top:6rem; 
+  padding: 1.5rem;
+}
+.square-resume {
+  text-align: center;
+  margin-top: 2rem;
+  margin-bottom: 3rem;
+}
+.hr-60 {
+  width: 60%;
+}
+.square-title {
+  display:inline-block;
+  padding: 30px;
+}
+.square-examination {
+  text-align: center;
+  margin-bottom: 6rem;
+}
+.resume-results {
+  width: 100%;
+  margin: 0 auto;
+  text-align:center;
+}
+.sub-link {
+  color:rgb(51, 51, 51);
+  font-weight: 600;
+  margin-left:10px;
 }
