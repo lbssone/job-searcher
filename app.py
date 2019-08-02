@@ -24,6 +24,7 @@ search_history = {}
 
 
 def get_job_list(offset=0, per_page=10):
+    global job_list
     return job_list[offset: offset + per_page]
 
 def get_key_word():
