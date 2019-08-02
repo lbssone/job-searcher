@@ -34,6 +34,7 @@ def get_key_word():
 
 @app.route('/')
 def index():
+    global search_history, area_dict, jobcat_104, worktime_104, salarytype_104
     return render_template('index.html', search_history=search_history, area_dict=area_dict, category_dict=jobcat_104 ,work_time_dict=worktime_104, salary_type_dict=salarytype_104)
 
 @app.route('/search')
@@ -285,6 +286,7 @@ def search():
 
 @app.route('/results')
 def results():
+    global job_list
     page, per_page, offset = get_page_args(page_parameter='page',
                                     per_page_parameter='per_page')
     total = len(job_list)
