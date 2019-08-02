@@ -27,6 +27,7 @@ def get_job_list(offset=0, per_page=10):
     return job_list[offset: offset + per_page]
 
 def get_key_word():
+    global keyword
     return keyword
 
 
