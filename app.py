@@ -98,8 +98,8 @@ def search():
     if not keyword:
         keyword_trans = ''
 
-    # search_url = 'https://my-job-searcher.herokuapp.com/search?keyword={}&area={}&category={}&work-time={}&salary-type={}&salary={}'.format(keyword_trans, '&area'.join(area_list), '&category'.join(category_list), work_time, salary_type, salary)
-    search_url = 'http://127.0.0.1:5000/search?keyword={}&area={}&category={}&work-time={}&salary-type={}&salary={}'.format(keyword_trans, '&area'.join(area_list), '&category'.join(category_list), work_time, salary_type, salary)
+    search_url = 'https://my-job-searcher.herokuapp.com/search?keyword={}&area={}&category={}&work-time={}&salary-type={}&salary={}'.format(keyword_trans, '&area'.join(area_list), '&category'.join(category_list), work_time, salary_type, salary)
+    # search_url = 'http://127.0.0.1:5000/search?keyword={}&area={}&category={}&work-time={}&salary-type={}&salary={}'.format(keyword_trans, '&area'.join(area_list), '&category'.join(category_list), work_time, salary_type, salary)
 
     condition = keyword
     if area_list != []:
