@@ -122,7 +122,7 @@ def search():
     # total_page_104 = int(doc_104('#job-jobList > script:nth-child(14)').text().split('totalPage":')[1].split(',')[0])
     # for page_num in range(1, int((total_page_104+1)/10)):
     try:
-        for page_num in range(1, 4):
+        for page_num in range(1, 3):
             url = 'https://www.104.com.tw/jobs/search/?kwop=7&keyword={}&area={}&cat={}&ro={}&sctp={}&scmin={}&page={}&jobsource=2018indexpoc'.format(keyword_trans, ','.join(area_num_104), ','.join(cat_num_104), work_time_104, salary_type_104, salary, page_num)
             response = requests.get(url)
             doc = pq(response.text)
@@ -152,7 +152,7 @@ def search():
     # 1111
     try:
         count = 1
-        while count <= 3:
+        while count <= 2:
             if work_time == '兼職':
                 response_1111 = requests.get('https://www.1111.com.tw/job-bank/job-index.asp?tt=2,4&ks={}&c0={}&d0={}&ts={}&st={}&sa0={}&page={}&si=1'.format(keyword_trans, ','.join(area_num_1111), ','.join(cat_num_1111), work_time_1111, salary_type_1111, salary, count))
             elif work_time == '全職':
