@@ -219,59 +219,59 @@ def search():
     # response_518 = requests.get('https://www.518.com.tw/job-index-P-1.html?ad={}&aa={}%2C&ab={}%2C&ai={}&ak={}&ak_min={}'.format(keyword_trans, ','.join(area_num_518), ','.join(cat_num_518), work_time_518, salary_type_num, salary_num))
     # doc_518 = pq(response_518.text)
     # total_page_518 = int(doc_518('#linkpage span.pagecountnum').text().split(' / ')[-1])
-    try:
-        for page_num in range(1, 4):
-            url = 'https://www.518.com.tw/job-index-P-{}.html?ad={}&aa={}%2C&ab={}%2C&ai={}&ak={}&ak_min={}'.format(page_num, keyword_trans, ','.join(area_num_518), ','.join(cat_num_518), work_time_518, salary_type_518, salary)
-            response_518 = requests.get(url)
-            doc = pq(response_518.text)
-            jobs_doc = doc("#listContent ul")
-            for job_doc in jobs_doc.items():
-                site = '518人力銀行'
-                title = job_doc('.title a').text()
-                link = job_doc('.title a').attr('href')
-                date = job_doc('.date').text()
-                info = job_doc('.sumbox p:nth-child(2)').text()
-                company_name = job_doc('.company a').text()
-                company_link = job_doc('.company a').attr('href')
-                area = job_doc('.area').text().replace('-', '')
-                wage = job_doc('.sumbox p:nth-child(1)').text()
-                experience = job_doc('.exp').text()
-                education = job_doc('.edu').text().split('/ ')[-1]
-                exist = False
-                for job in job_list:
-                    if job['title'] == title and job['company']['name'] == company_name and job['area'] == area:
-                        source_list = []
-                        for source in job['source']:
-                            source_list.append(source['site'])
-                        if site not in source_list:
-                            new_source = {}
-                            new_source['site'] = site
-                            new_source['link'] = link
-                            job['source'].append(new_source)
-                        exist = True
-                        break
-                if exist == False:
-                    job_dict = {}
-                    job_dict['source'] = []
-                    source = {}
-                    source['site'] = site
-                    source['link'] = link
-                    job_dict['source'].append(source)
-                    job_dict['title'] = title
-                    job_dict['date'] = date
-                    job_dict['info'] = info
-                    job_dict['company'] = {}
-                    job_dict['company']['name'] = company_name
-                    job_dict['company']['link'] = company_link
-                    job_dict['area'] = area
-                    job_dict['wage'] = wage
-                    job_dict['experience'] = experience
-                    job_dict['education'] = education        
-                    job_list.append(job_dict)
-            print(salary)
-            print('518 url: ' + url)
-    except ConnectionError:
-        print('518 connection error')
+    # try:
+    #     for page_num in range(1, 4):
+    #         url = 'https://www.518.com.tw/job-index-P-{}.html?ad={}&aa={}%2C&ab={}%2C&ai={}&ak={}&ak_min={}'.format(page_num, keyword_trans, ','.join(area_num_518), ','.join(cat_num_518), work_time_518, salary_type_518, salary)
+    #         response_518 = requests.get(url)
+    #         doc = pq(response_518.text)
+    #         jobs_doc = doc("#listContent ul")
+    #         for job_doc in jobs_doc.items():
+    #             site = '518人力銀行'
+    #             title = job_doc('.title a').text()
+    #             link = job_doc('.title a').attr('href')
+    #             date = job_doc('.date').text()
+    #             info = job_doc('.sumbox p:nth-child(2)').text()
+    #             company_name = job_doc('.company a').text()
+    #             company_link = job_doc('.company a').attr('href')
+    #             area = job_doc('.area').text().replace('-', '')
+    #             wage = job_doc('.sumbox p:nth-child(1)').text()
+    #             experience = job_doc('.exp').text()
+    #             education = job_doc('.edu').text().split('/ ')[-1]
+    #             exist = False
+    #             for job in job_list:
+    #                 if job['title'] == title and job['company']['name'] == company_name and job['area'] == area:
+    #                     source_list = []
+    #                     for source in job['source']:
+    #                         source_list.append(source['site'])
+    #                     if site not in source_list:
+    #                         new_source = {}
+    #                         new_source['site'] = site
+    #                         new_source['link'] = link
+    #                         job['source'].append(new_source)
+    #                     exist = True
+    #                     break
+    #             if exist == False:
+    #                 job_dict = {}
+    #                 job_dict['source'] = []
+    #                 source = {}
+    #                 source['site'] = site
+    #                 source['link'] = link
+    #                 job_dict['source'].append(source)
+    #                 job_dict['title'] = title
+    #                 job_dict['date'] = date
+    #                 job_dict['info'] = info
+    #                 job_dict['company'] = {}
+    #                 job_dict['company']['name'] = company_name
+    #                 job_dict['company']['link'] = company_link
+    #                 job_dict['area'] = area
+    #                 job_dict['wage'] = wage
+    #                 job_dict['experience'] = experience
+    #                 job_dict['education'] = education        
+    #                 job_list.append(job_dict)
+    #         print(salary)
+    #         print('518 url: ' + url)
+    # except ConnectionError:
+    #     print('518 connection error')
 
     
     print('length of job_list:', len(job_list))
