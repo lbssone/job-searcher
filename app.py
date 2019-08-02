@@ -285,7 +285,7 @@ def search():
 
 
 @app.route('/results')
-def results(keyword):
+def results(keyword=keyword):
     global keyword_trans, job_list, condition, search_history
     page, per_page, offset = get_page_args(page_parameter='page',
                                     per_page_parameter='per_page')
