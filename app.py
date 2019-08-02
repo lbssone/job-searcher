@@ -294,6 +294,7 @@ def results():
     pagination = Pagination(page=page, per_page=per_page, total=total, css_framework='bootstrap4')
     keyword = get_key_word()
     print('[redirected]')
+    print(keyword)
     return render_template('results.html', 
                             keyword=keyword, 
                             keyword_trans=keyword_trans,
