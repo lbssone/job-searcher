@@ -121,148 +121,157 @@ def search():
     # doc_104 = pq(response_104.text)
     # total_page_104 = int(doc_104('#job-jobList > script:nth-child(14)').text().split('totalPage":')[1].split(',')[0])
     # for page_num in range(1, int((total_page_104+1)/10)):
-    for page_num in range(1, 4):
-        url = 'https://www.104.com.tw/jobs/search/?kwop=7&keyword={}&area={}&cat={}&ro={}&sctp={}&scmin={}&page={}&jobsource=2018indexpoc'.format(keyword_trans, ','.join(area_num_104), ','.join(cat_num_104), work_time_104, salary_type_104, salary, page_num)
-        response = requests.get(url)
-        doc = pq(response.text)
-        jobs_doc = doc("#js-job-content article.job-list-item")
-        for job_doc in jobs_doc.items():
-            job_dict = {}
-            job_dict['source'] = []
-            source = {}
-            source['site'] = '104人力銀行'
-            source['link'] = job_doc('.js-job-link').attr('href')
-            job_dict['source'].append(source)
-            job_dict['title'] = job_doc('.js-job-link').text()
-            job_dict['date'] = job_doc('.b-tit span.b-tit__date').text()
-            job_dict['info'] = job_doc('.job-list-item__info').text()
-            job_dict['company'] = {}
-            job_dict['company']['name'] = job_doc('ul:nth-child(2) li:nth-child(2) a').text()
-            job_dict['company']['link'] = job_doc('ul:nth-child(2) li:nth-child(2) a').attr('href')
-            job_dict['area'] = job_doc('ul.b-list-inline.b-clearfix.job-list-intro.b-content li:nth-child(1)').text()
-            job_dict['wage'] = job_doc('div.b-block__left > div > span:nth-child(1)')
-            job_dict['experience'] = job_doc('ul.b-list-inline.b-clearfix.job-list-intro.b-content li:nth-child(3)').text()
-            job_dict['education'] = job_doc('ul.b-list-inline.b-clearfix.job-list-intro.b-content li:nth-child(5)').text()            
-            job_list.append(job_dict)
-        print(salary)
-        print('104 url: ' + url)
-    # 1111
-    count = 1
-    while count <= 3:
-        if work_time == '兼職':
-            response_1111 = requests.get('https://www.1111.com.tw/job-bank/job-index.asp?tt=2,4&ks={}&c0={}&d0={}&ts={}&st={}&sa0={}&page={}&si=1'.format(keyword_trans, ','.join(area_num_1111), ','.join(cat_num_1111), work_time_1111, salary_type_1111, salary, count))
-        elif work_time == '全職':
-            response_1111 = requests.get('https://www.1111.com.tw/job-bank/job-index.asp?tt=1&ks={}&c0={}&d0={}&ts={}&st={}&sa0={}&page={}&si=1'.format(keyword_trans, ','.join(area_num_1111), ','.join(cat_num_1111), work_time_1111, salary_type_1111, salary, count))
-        else:
-            response_1111 = requests.get('https://www.1111.com.tw/job-bank/job-index.asp?ks={}&c0={}&d0={}&ts={}&st={}&sa0={}&page={}&si=1'.format(keyword_trans, ','.join(area_num_1111), ','.join(cat_num_1111), work_time_1111, salary_type_1111, salary, count))
-        doc = pq(response_1111.text)
-        jobs_doc = doc('#jobResult #record_{} li.digest'.format(count))
-        for job_doc in jobs_doc.items():
-            site = '1111人力銀行'
-            title = job_doc('.jbInfoin h3 a').text()
-            link = job_doc('.jbInfoin h3 a').attr('href')
-            date = job_doc('.jbControl .date').text()
-            info = job_doc('.jbInfoTxt p').text()
-            company_name = job_doc('.jbInfoin h4 a').text()
-            company_link = job_doc('.jbInfoin h4 a').attr('href')
-            area = job_doc('.jbControl .location a').text()
-            wage = job_doc('.needs').text().split('|')[0]
-            experience = job_doc('.needs').text().split('|')[1]
-            education = job_doc('.needs').text().split('|')[2]
-            exist = False
-            for job in job_list:
-                if job['title'] == title and job['company']['name'] == company_name and job['area'] == area:
-                    source_list = []
-                    for source in job['source']:
-                        source_list.append(source['site'])
-                    if site not in source_list:
-                        new_source = {}
-                        new_source['site'] = site
-                        new_source['link'] = link
-                        job['source'].append(new_source)
-                    exist = True
-                    break
-            if exist == False:
+    try:
+        for page_num in range(1, 9):
+            url = 'https://www.104.com.tw/jobs/search/?kwop=7&keyword={}&area={}&cat={}&ro={}&sctp={}&scmin={}&page={}&jobsource=2018indexpoc'.format(keyword_trans, ','.join(area_num_104), ','.join(cat_num_104), work_time_104, salary_type_104, salary, page_num)
+            response = requests.get(url)
+            doc = pq(response.text)
+            jobs_doc = doc("#js-job-content article.b-block--top-bord.job-list-item.b-clearfix.js-job-item")
+            for job_doc in jobs_doc.items():
                 job_dict = {}
                 job_dict['source'] = []
                 source = {}
-                source['site'] = site
-                source['link'] = link
+                source['site'] = '104人力銀行'
+                source['link'] = job_doc('.js-job-link').attr('href')
                 job_dict['source'].append(source)
-                job_dict['title'] = title
-                job_dict['date'] = date
-                job_dict['info'] = info
+                job_dict['title'] = job_doc('.js-job-link').text()
+                job_dict['date'] = job_doc('.b-tit span.b-tit__date').text()
+                job_dict['info'] = job_doc('.job-list-item__info').text()
                 job_dict['company'] = {}
-                job_dict['company']['name'] = company_name
-                job_dict['company']['link'] = company_link
-                job_dict['area'] = area
-                job_dict['wage'] = wage
-                job_dict['experience'] = experience
-                job_dict['education'] = education            
+                job_dict['company']['name'] = job_doc('ul:nth-child(2) li:nth-child(2) a').text()
+                job_dict['company']['link'] = job_doc('ul:nth-child(2) li:nth-child(2) a').attr('href')
+                job_dict['area'] = job_doc('ul.b-list-inline.b-clearfix.job-list-intro.b-content li:nth-child(1)').text()
+                job_dict['wage'] = job_doc('div.b-block__left > div > span:nth-child(1)')
+                job_dict['experience'] = job_doc('ul.b-list-inline.b-clearfix.job-list-intro.b-content li:nth-child(3)').text()
+                job_dict['education'] = job_doc('ul.b-list-inline.b-clearfix.job-list-intro.b-content li:nth-child(5)').text()            
                 job_list.append(job_dict)
-        print(salary)
-        print(response_1111.url)
-        next_page_link = doc("#PageFooterD .pagination a.active").parent().next().children().attr("href")
-        if next_page_link:
-            response_1111 = requests.get('https://www.1111.com.tw/job-bank/job-index.asp' + next_page_link)
-            count += 1
-        else:
-            break
+            print(salary)
+            print('104 url: ' + url)
+    except ConnectionError:
+        print('104 connection error')
+    # 1111
+    try:
+        count = 1
+        while count <= 8:
+            if work_time == '兼職':
+                response_1111 = requests.get('https://www.1111.com.tw/job-bank/job-index.asp?tt=2,4&ks={}&c0={}&d0={}&ts={}&st={}&sa0={}&page={}&si=1'.format(keyword_trans, ','.join(area_num_1111), ','.join(cat_num_1111), work_time_1111, salary_type_1111, salary, count))
+            elif work_time == '全職':
+                response_1111 = requests.get('https://www.1111.com.tw/job-bank/job-index.asp?tt=1&ks={}&c0={}&d0={}&ts={}&st={}&sa0={}&page={}&si=1'.format(keyword_trans, ','.join(area_num_1111), ','.join(cat_num_1111), work_time_1111, salary_type_1111, salary, count))
+            else:
+                response_1111 = requests.get('https://www.1111.com.tw/job-bank/job-index.asp?ks={}&c0={}&d0={}&ts={}&st={}&sa0={}&page={}&si=1'.format(keyword_trans, ','.join(area_num_1111), ','.join(cat_num_1111), work_time_1111, salary_type_1111, salary, count))
+            doc = pq(response_1111.text)
+            jobs_doc = doc('#jobResult #record_{} li.digest'.format(count))
+            for job_doc in jobs_doc.items():
+                site = '1111人力銀行'
+                title = job_doc('.jbInfoin h3 a').text()
+                link = job_doc('.jbInfoin h3 a').attr('href')
+                date = job_doc('.jbControl .date').text()
+                info = job_doc('.jbInfoTxt p').text()
+                company_name = job_doc('.jbInfoin h4 a').text()
+                company_link = job_doc('.jbInfoin h4 a').attr('href')
+                area = job_doc('.jbControl .location a').text()
+                wage = job_doc('.needs').text().split('|')[0]
+                experience = job_doc('.needs').text().split('|')[1]
+                education = job_doc('.needs').text().split('|')[2]
+                exist = False
+                for job in job_list:
+                    if job['title'] == title and job['company']['name'] == company_name and job['area'] == area:
+                        source_list = []
+                        for source in job['source']:
+                            source_list.append(source['site'])
+                        if site not in source_list:
+                            new_source = {}
+                            new_source['site'] = site
+                            new_source['link'] = link
+                            job['source'].append(new_source)
+                        exist = True
+                        break
+                if exist == False:
+                    job_dict = {}
+                    job_dict['source'] = []
+                    source = {}
+                    source['site'] = site
+                    source['link'] = link
+                    job_dict['source'].append(source)
+                    job_dict['title'] = title
+                    job_dict['date'] = date
+                    job_dict['info'] = info
+                    job_dict['company'] = {}
+                    job_dict['company']['name'] = company_name
+                    job_dict['company']['link'] = company_link
+                    job_dict['area'] = area
+                    job_dict['wage'] = wage
+                    job_dict['experience'] = experience
+                    job_dict['education'] = education            
+                    job_list.append(job_dict)
+            print(salary)
+            print(response_1111.url)
+            next_page_link = doc("#PageFooterD .pagination a.active").parent().next().children().attr("href")
+            if next_page_link:
+                response_1111 = requests.get('https://www.1111.com.tw/job-bank/job-index.asp' + next_page_link)
+                count += 1
+            else:
+                break
+    except ConnectionError:
+        print('1111 connection error')    
     
     # 518
     # response_518 = requests.get('https://www.518.com.tw/job-index-P-1.html?ad={}&aa={}%2C&ab={}%2C&ai={}&ak={}&ak_min={}'.format(keyword_trans, ','.join(area_num_518), ','.join(cat_num_518), work_time_518, salary_type_num, salary_num))
     # doc_518 = pq(response_518.text)
     # total_page_518 = int(doc_518('#linkpage span.pagecountnum').text().split(' / ')[-1])
-    for page_num in range(1, 4):
-        url = 'https://www.518.com.tw/job-index-P-{}.html?ad={}&aa={}%2C&ab={}%2C&ai={}&ak={}&ak_min={}'.format(page_num, keyword_trans, ','.join(area_num_518), ','.join(cat_num_518), work_time_518, salary_type_518, salary)
-        response_518 = requests.get(url)
-        doc = pq(response_518.text)
-        jobs_doc = doc("#listContent ul")
-        for job_doc in jobs_doc.items():
-            site = '518人力銀行'
-            title = job_doc('.title a').text()
-            link = job_doc('.title a').attr('href')
-            date = job_doc('.date').text()
-            info = job_doc('.sumbox p:nth-child(2)').text()
-            company_name = job_doc('.company a').text()
-            company_link = job_doc('.company a').attr('href')
-            area = job_doc('.area').text().replace('-', '')
-            wage = job_doc('.sumbox p:nth-child(1)').text()
-            experience = job_doc('.exp').text()
-            education = job_doc('.edu').text().split('/ ')[-1]
-            exist = False
-            for job in job_list:
-                if job['title'] == title and job['company']['name'] == company_name and job['area'] == area:
-                    source_list = []
-                    for source in job['source']:
-                        source_list.append(source['site'])
-                    if site not in source_list:
-                        new_source = {}
-                        new_source['site'] = site
-                        new_source['link'] = link
-                        job['source'].append(new_source)
-                    exist = True
-                    break
-            if exist == False:
-                job_dict = {}
-                job_dict['source'] = []
-                source = {}
-                source['site'] = site
-                source['link'] = link
-                job_dict['source'].append(source)
-                job_dict['title'] = title
-                job_dict['date'] = date
-                job_dict['info'] = info
-                job_dict['company'] = {}
-                job_dict['company']['name'] = company_name
-                job_dict['company']['link'] = company_link
-                job_dict['area'] = area
-                job_dict['wage'] = wage
-                job_dict['experience'] = experience
-                job_dict['education'] = education        
-                job_list.append(job_dict)
-        print(salary)
-        print('518 url: ' + url)
+    try:
+        for page_num in range(1, 9):
+            url = 'https://www.518.com.tw/job-index-P-{}.html?ad={}&aa={}%2C&ab={}%2C&ai={}&ak={}&ak_min={}'.format(page_num, keyword_trans, ','.join(area_num_518), ','.join(cat_num_518), work_time_518, salary_type_518, salary)
+            response_518 = requests.get(url)
+            doc = pq(response_518.text)
+            jobs_doc = doc("#listContent ul")
+            for job_doc in jobs_doc.items():
+                site = '518人力銀行'
+                title = job_doc('.title a').text()
+                link = job_doc('.title a').attr('href')
+                date = job_doc('.date').text()
+                info = job_doc('.sumbox p:nth-child(2)').text()
+                company_name = job_doc('.company a').text()
+                company_link = job_doc('.company a').attr('href')
+                area = job_doc('.area').text().replace('-', '')
+                wage = job_doc('.sumbox p:nth-child(1)').text()
+                experience = job_doc('.exp').text()
+                education = job_doc('.edu').text().split('/ ')[-1]
+                exist = False
+                for job in job_list:
+                    if job['title'] == title and job['company']['name'] == company_name and job['area'] == area:
+                        source_list = []
+                        for source in job['source']:
+                            source_list.append(source['site'])
+                        if site not in source_list:
+                            new_source = {}
+                            new_source['site'] = site
+                            new_source['link'] = link
+                            job['source'].append(new_source)
+                        exist = True
+                        break
+                if exist == False:
+                    job_dict = {}
+                    job_dict['source'] = []
+                    source = {}
+                    source['site'] = site
+                    source['link'] = link
+                    job_dict['source'].append(source)
+                    job_dict['title'] = title
+                    job_dict['date'] = date
+                    job_dict['info'] = info
+                    job_dict['company'] = {}
+                    job_dict['company']['name'] = company_name
+                    job_dict['company']['link'] = company_link
+                    job_dict['area'] = area
+                    job_dict['wage'] = wage
+                    job_dict['experience'] = experience
+                    job_dict['education'] = education        
+                    job_list.append(job_dict)
+            print(salary)
+            print('518 url: ' + url)
+    except ConnectionError:
+        print('518 connection error')
 
     
     print('length of job_list:', len(job_list))
@@ -337,8 +346,13 @@ def interview():
         else:
             return render_template('interview_results.html', interview_list=interview_list)
 
+@app.route('/test')
+def test():
+    return render_template('examination.html')
 
-
+@app.route('/resume')
+def resume():
+    return render_template('resume.html')
 
 if __name__ == "__main__":
     app.run(port=5000, debug = True)
