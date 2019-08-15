@@ -26,8 +26,7 @@ condition = ''
 work_time = ''
 salary_type = ''
 salary = ''
-interview_keyword = ''
-search_history = {}
+# search_history = {}
 
 
 def get_job_list(job_list, offset=0, per_page=10):
@@ -40,13 +39,19 @@ def get_key_word():
 
 @app.route('/')
 def index():
-    global search_history, area_dict, jobcat_104, worktime_104, salarytype_104
-    return render_template('index.html', search_history=search_history, area_dict=area_dict, category_dict=jobcat_104 ,work_time_dict=worktime_104, salary_type_dict=salarytype_104)
+    try:
+        session['search_history']
+    except:
+        session['search_history'] = {}
+    return render_template('index.html', search_history=session['search_history'], area_dict=area_dict, category_dict=jobcat_104 ,work_time_dict=worktime_104, salary_type_dict=salarytype_104)
 
 @app.route('/search')
 def search():
-    # session['job_list'] = []
-    global keyword, keyword_trans, area_list, category_list, condition, work_time, salary_type, salary, search_history
+    try:
+        session['search_history']
+    except:
+        session['search_history'] = {}
+    global keyword, keyword_trans, area_list, category_list, condition, work_time, salary_type, salary
     # session['job_list'].clear()
     job_list = []
     area_list.clear()
@@ -121,7 +126,7 @@ def search():
     if salary_type != '':
         condition += '+' + salary_type + salary
 
-    search_history[condition] = search_url
+    session['search_history'][condition] = search_url
     print('keyword: ' + keyword)
     print('keyword_trans: ' + keyword_trans)
     print('area_list:', area_list)
@@ -288,7 +293,7 @@ def search():
 
     # session.modified = True
     print('length of job_list:', len(job_list))
-    print('search history:', search_history)
+    print('search history:', session['search_history'])
     print('[redirect to /results]')
     session['job_list'] = job_list
 
@@ -299,13 +304,13 @@ def search():
 def results():
     keyword = session.get('keyword')
     job_list = session.get('job_list')
-    print(job_list)
-    global keyword_trans, condition, search_history
+    global keyword_trans, condition
     page, per_page, offset = get_page_args(page_parameter='page',
                                     per_page_parameter='per_page')
     total = len(job_list)
     pagination_job_list = get_job_list(job_list, offset=offset, per_page=per_page)
     pagination = Pagination(page=page, per_page=per_page, total=total, css_framework='bootstrap4')
+    search_history = session.get('search_history')
     print('[redirected]')
     print(keyword)
     return render_template('results.html', 
@@ -339,7 +344,6 @@ def interview():
         if btn_query:
             url = 'https://www.googleapis.com/customsearch/v1?key={}&cx={}&lr=lang_zh-TW&q={}%20面試'.format(api_key, cx, btn_query)
         else:
-            global interview_keyword
             interview_keyword = request.values.get('interview-keyword')
             url = 'https://www.googleapis.com/customsearch/v1?key={}&cx={}&lr=lang_zh-TW&q={}%20面試'.format(api_key, cx, interview_keyword)
         response = requests.get(url)
@@ -359,7 +363,7 @@ def interview():
             interview_list.append(interview_dict)
         print(url)
         if btn_query:
-            return render_template('interview_results.html', interview_list=interview_list, keyword=keyword)
+            return render_template('interview_results.html', interview_list=interview_list, keyword=session['keyword'])
         elif interview_keyword:
             return render_template('interview_results.html', interview_list=interview_list, interview_keyword=interview_keyword)
         else:
