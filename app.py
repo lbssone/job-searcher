@@ -10,22 +10,13 @@ from job import jobcat_104, jobcat_1111, jobcat_518
 from data import worktime_104, worktime_1111, worktime_518, salarytype_104, salarytype_1111, salarytype_518
 
 app = Flask(__name__)
-app.secret_key = 'redsfsfsfsfis'
+app.secret_key = 'job_searcher'
 app.config['SESSION_TYPE'] = 'filesystem'
 app.config['SECRET_KEY'] = os.urandom(24)
-# app.config.from_object(__name__)
 Session(app)
 
 char_dict = {' ':'%20', '!':'%21', '"':'%22', '#':'%23', '$':'%24', '%':'%25', '&':'%26', '\'':'%27',
             '(':'%28', ')':'%29', '*':'%2A', '+':'%2B', ',':'%2C', '-':'%2D', '.':'%2E', '/':'%2F'}
-
-area_list = []
-category_list = []
-condition = ''
-work_time = ''
-salary_type = ''
-salary = ''
-# search_history = {}
 
 
 def get_job_list(job_list, offset=0, per_page=10):
@@ -49,8 +40,8 @@ def search():
     global area_list, category_list, condition, work_time, salary_type, salary
     # session['job_list'].clear()
     job_list = []
-    area_list.clear()
-    category_list.clear()
+    area_list, category_list = [], []
+    work_time, salary_type, salary = '', '', ''
     area_num_104, area_num_1111, area_num_518 = [] , [], []
     cat_num_104, cat_num_1111, cat_num_518 = [], [], []
     work_time_104, work_time_1111, work_time_518 = '', '', ''
@@ -58,25 +49,29 @@ def search():
 
     keyword = request.values.get('keyword')
     session['keyword'] = keyword
-    area_list = request.values.getlist('area')
+    session['area_list'] = request.values.getlist('area')
+    
     try:
-        for a in area_list:
+        for a in session['area_list']:
             area_num_104.append(str(area_104[a]))
             area_num_1111.append(str(area_1111[a]))
             area_num_518.append(str(area_518[a]))
     except KeyError:
-        area_list = []
+        session['area_list'] = []
+    area_list = session['area_list']
         
-    category_list = request.values.getlist('category')
+    session['category_list'] = request.values.getlist('category')
     try:
-        for c in category_list:
+        for c in session['category_list']:
             cat_num_104.append(str(jobcat_104[c]))
             cat_num_1111.append(str(jobcat_1111[c]))
             cat_num_518.append(str(jobcat_518[c]))
     except KeyError:
-        category_list = []
+        session['category_list'] = []
+    category_list = session['category_list']
 
-    work_time = request.values.get('work-time')
+    session['work_time'] = request.values.get('work-time')
+    work_time = session['work_time']
     if work_time:
         work_time_104 = worktime_104[work_time]
         work_time_1111 = worktime_1111[work_time]
@@ -86,7 +81,8 @@ def search():
         work_time_1111 = ''
         work_time_518 = ''
         
-    salary_type = request.values.get('salary-type')
+    session['salary_type'] = request.values.get('salary-type')
+    salary_type = session['salary_type']
     if salary_type:
         salary_type_104 = salarytype_104[salary_type]
         salary_type_1111 = salarytype_1111[salary_type]
@@ -96,9 +92,10 @@ def search():
         salary_type_1111 = ''
         salary_type_518 = ''
 
-    salary = request.values.get('salary')
-    if salary == None:
-        salary = ''
+    session['salary'] = request.values.get('salary')
+    if session['salary'] == None:
+        session['salary'] = ''
+    salary = session['salary']
 
     for k in keyword:
         if k in char_dict:
@@ -121,6 +118,7 @@ def search():
         condition += '+' + work_time
     if salary_type != '':
         condition += '+' + salary_type + salary
+    session['condition'] = condition
 
     session['search_history'][condition] = search_url
     print('keyword: ' + keyword)
