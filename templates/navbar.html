@@ -11,16 +11,16 @@
 		<div class="collapse navbar-collapse" id="navbarResponsive"><!---這裡的id叫navbarResponsive，所以會被那個button toggle-->
 			<ul class="navbar-nav ml-auto" style="font-size: 16px">
 				<li class="nav-item">
-					<a class="nav-link" href="/">找工作</a>
+					<a class="nav-link {{'active' if active_page == 'index' or active_page == 'results' else ''}}" href="/">找工作</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="/interview">面試經驗分享</a>
+					<a class="nav-link {{'active' if active_page == 'interview' else ''}}" href="/interview">面試經驗分享</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="/test">職能性向小測驗</a>
+					<a class="nav-link {{'active' if active_page == 'test' else ''}}" href="/test">職能性向小測驗</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="/resume">履歷範例</a>
+					<a class="nav-link {{'active' if active_page == 'resume' else ''}}" href="/resume">履歷範例</a>
 				</li>
 			</ul>
 		</div>
