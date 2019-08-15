@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, url_for, redirect
+from flask import Flask, request, render_template, url_for, redirect, session
 from flask_paginate import Pagination, get_page_args
 import requests
 from pyquery import PyQuery as pq
@@ -8,6 +8,8 @@ from job import jobcat_104, jobcat_1111, jobcat_518
 from data import worktime_104, worktime_1111, worktime_518, salarytype_104, salarytype_1111, salarytype_518
 
 app = Flask(__name__)
+app.secret_key = 'job_searcher'
+
 job_list = []
 char_dict = {' ':'%20', '!':'%21', '"':'%22', '#':'%23', '$':'%24', '%':'%25', '&':'%26', '\'':'%27',
             '(':'%28', ')':'%29', '*':'%2A', '+':'%2B', ',':'%2C', '-':'%2D', '.':'%2E', '/':'%2F'}
@@ -46,6 +48,7 @@ def search():
     salary_type_104, salary_type_1111, salary_type_518 = '', '', ''
 
     keyword = request.values.get('keyword')
+    session['keyword'] = keyword
     area_list = request.values.getlist('area')
     try:
         for a in area_list:
@@ -122,7 +125,7 @@ def search():
     # total_page_104 = int(doc_104('#job-jobList > script:nth-child(14)').text().split('totalPage":')[1].split(',')[0])
     # for page_num in range(1, int((total_page_104+1)/10)):
     try:
-        for page_num in range(1, 9):
+        for page_num in range(1, 3):
             url = 'https://www.104.com.tw/jobs/search/?kwop=7&keyword={}&area={}&cat={}&ro={}&sctp={}&scmin={}&page={}&jobsource=2018indexpoc'.format(keyword_trans, ','.join(area_num_104), ','.join(cat_num_104), work_time_104, salary_type_104, salary, page_num)
             response = requests.get(url)
             doc = pq(response.text)
@@ -152,7 +155,7 @@ def search():
     # 1111
     try:
         count = 1
-        while count <= 8:
+        while count <= 3:
             if work_time == '兼職':
                 response_1111 = requests.get('https://www.1111.com.tw/job-bank/job-index.asp?tt=2,4&ks={}&c0={}&d0={}&ts={}&st={}&sa0={}&page={}&si=1'.format(keyword_trans, ','.join(area_num_1111), ','.join(cat_num_1111), work_time_1111, salary_type_1111, salary, count))
             elif work_time == '全職':
@@ -220,7 +223,7 @@ def search():
     # doc_518 = pq(response_518.text)
     # total_page_518 = int(doc_518('#linkpage span.pagecountnum').text().split(' / ')[-1])
     try:
-        for page_num in range(1, 9):
+        for page_num in range(1, 3):
             url = 'https://www.518.com.tw/job-index-P-{}.html?ad={}&aa={}%2C&ab={}%2C&ai={}&ak={}&ak_min={}'.format(page_num, keyword_trans, ','.join(area_num_518), ','.join(cat_num_518), work_time_518, salary_type_518, salary)
             response_518 = requests.get(url)
             doc = pq(response_518.text)
@@ -277,6 +280,7 @@ def search():
     print('length of job_list:', len(job_list))
     print('search history:', search_history)
     print('[redirect to /results]')
+
     return redirect(url_for('results'))
 
 
@@ -287,7 +291,7 @@ def results():
     total = len(job_list)
     pagination_job_list = get_job_list(offset=offset, per_page=per_page)
     pagination = Pagination(page=page, per_page=per_page, total=total, css_framework='bootstrap4')
-    keyword = get_key_word()
+    keyword = session['keyword']
     print('[redirected]')
     return render_template('results.html', 
                             keyword=keyword, 
