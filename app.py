@@ -281,12 +281,12 @@ def search():
     print('length of job_list:', len(job_list))
     print('search history:', search_history)
     print('[redirect to /results]')
-    return redirect(url_for('results', keyword=keyword))
+    return redirect(url_for('results'))
 
 
 @app.route('/results')
-def results(keyword=keyword):
-    global keyword_trans, job_list, condition, search_history
+def results():
+    global keyword, keyword_trans, job_list, condition, search_history
     page, per_page, offset = get_page_args(page_parameter='page',
                                     per_page_parameter='per_page')
     total = len(job_list)
