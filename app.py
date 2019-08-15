@@ -166,7 +166,7 @@ def search():
     # 1111
     try:
         count = 1
-        while count <= 2:
+        while count <= 1:
             if work_time == '兼職':
                 response_1111 = requests.get('https://www.1111.com.tw/job-bank/job-index.asp?tt=2,4&ks={}&c0={}&d0={}&ts={}&st={}&sa0={}&page={}&si=1'.format(keyword_trans, ','.join(area_num_1111), ','.join(cat_num_1111), work_time_1111, salary_type_1111, salary, count))
             elif work_time == '全職':
