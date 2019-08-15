@@ -28,7 +28,7 @@ def index():
     try:
         session['search_history']
     except:
-        session['search_history'] = {}
+        session['search_history'] = []
     return render_template('index.html', search_history=session['search_history'], area_dict=area_dict, category_dict=jobcat_104 ,work_time_dict=worktime_104, salary_type_dict=salarytype_104)
 
 @app.route('/search')
@@ -36,7 +36,7 @@ def search():
     try:
         session['search_history']
     except:
-        session['search_history'] = {}
+        session['search_history'] = []
     job_list = []
     area_list, category_list = [], []
     work_time, salary_type, salary = '', '', ''
@@ -118,7 +118,9 @@ def search():
         session['condition'] += '+' + salary_type + salary
     condition = session['condition']
 
-    session['search_history'][condition] = search_url
+    history = []
+    history.append(condition, search_url)
+    session['search_history'].append(history)
     print('keyword: ' + keyword)
     print('keyword_trans: ' + keyword_trans)
     print('area_list:', area_list)
