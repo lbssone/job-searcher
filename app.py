@@ -37,8 +37,6 @@ def search():
         session['search_history']
     except:
         session['search_history'] = {}
-    global area_list, category_list, condition, work_time, salary_type, salary
-    # session['job_list'].clear()
     job_list = []
     area_list, category_list = [], []
     work_time, salary_type, salary = '', '', ''
@@ -109,16 +107,16 @@ def search():
     search_url = 'https://my-job-searcher.herokuapp.com/search?keyword={}&area={}&category={}&work-time={}&salary-type={}&salary={}'.format(keyword_trans, '&area'.join(area_list), '&category'.join(category_list), work_time, salary_type, salary)
     # search_url = 'http://127.0.0.1:5000/search?keyword={}&area={}&category={}&work-time={}&salary-type={}&salary={}'.format(keyword_trans, '&area'.join(area_list), '&category'.join(category_list), work_time, salary_type, salary)
 
-    condition = keyword
+    session['condition'] = keyword
     if area_list != []:
-        condition += '+' + '+'.join(area_list)
+        session['condition'] += '+' + '+'.join(area_list)
     if category_list != []:
-        condition += '+' + '+'.join(category_list)
+        session['condition'] += '+' + '+'.join(category_list)
     if work_time != '':
-        condition += '+' + work_time
+        session['condition'] += '+' + work_time
     if salary_type != '':
-        condition += '+' + salary_type + salary
-    session['condition'] = condition
+        session['condition'] += '+' + salary_type + salary
+    condition = session['condition']
 
     session['search_history'][condition] = search_url
     print('keyword: ' + keyword)
@@ -299,7 +297,12 @@ def results():
     keyword = session.get('keyword')
     job_list = session.get('job_list')
     keyword_trans = session.get('keyword_trans')
-    global condition
+    area_list = session.get('area_list')
+    category_list = session.get('category_list')
+    condition = session.get('condition')
+    work_time = session.get('work_time')
+    salary_type = session.get('salary_type')
+    salary = session.get('salary')
     page, per_page, offset = get_page_args(page_parameter='page',
                                     per_page_parameter='per_page')
     total = len(job_list)
