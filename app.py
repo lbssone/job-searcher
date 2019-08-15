@@ -15,6 +15,7 @@ app.config['SESSION_TYPE'] = 'filesystem'
 app.config['SECRET_KEY'] = os.urandom(24)
 Session(app)
 
+
 char_dict = {' ':'%20', '!':'%21', '"':'%22', '#':'%23', '$':'%24', '%':'%25', '&':'%26', '\'':'%27',
             '(':'%28', ')':'%29', '*':'%2A', '+':'%2B', ',':'%2C', '-':'%2D', '.':'%2E', '/':'%2F'}
 
@@ -27,9 +28,11 @@ def get_job_list(job_list, offset=0, per_page=10):
 def index():
     try:
         session['search_history']
+        session['area_list']
     except:
         session['search_history'] = []
-    return render_template('index.html', search_history=session['search_history'], area_dict=area_dict, category_dict=jobcat_104 ,work_time_dict=worktime_104, salary_type_dict=salarytype_104)
+        session['area_list'] = []
+    return render_template('index.html', search_history=session['search_history'], area_list=session['area_list'], area_dict=area_dict, category_dict=jobcat_104 ,work_time_dict=worktime_104, salary_type_dict=salarytype_104)
 
 @app.route('/search')
 def search():
@@ -119,7 +122,8 @@ def search():
     condition = session['condition']
 
     history = []
-    history.append(condition, search_url)
+    history.append(condition)
+    history.append(search_url)
     session['search_history'].append(history)
     print('keyword: ' + keyword)
     print('keyword_trans: ' + keyword_trans)
