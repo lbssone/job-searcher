@@ -1,16 +1,21 @@
 from flask import Flask, request, render_template, url_for, redirect, session
+from flask_session import Session
 from flask_paginate import Pagination, get_page_args
 import requests
 from pyquery import PyQuery as pq
 import json
+import os
 from area import area_104, area_1111, area_518, area_dict
 from job import jobcat_104, jobcat_1111, jobcat_518
 from data import worktime_104, worktime_1111, worktime_518, salarytype_104, salarytype_1111, salarytype_518
 
 app = Flask(__name__)
-app.secret_key = 'job_searcher'
+app.secret_key = 'redsfsfsfsfis'
+app.config['SESSION_TYPE'] = 'filesystem'
+app.config['SECRET_KEY'] = os.urandom(24)
+# app.config.from_object(__name__)
+Session(app)
 
-job_list = []
 char_dict = {' ':'%20', '!':'%21', '"':'%22', '#':'%23', '$':'%24', '%':'%25', '&':'%26', '\'':'%27',
             '(':'%28', ')':'%29', '*':'%2A', '+':'%2B', ',':'%2C', '-':'%2D', '.':'%2E', '/':'%2F'}
 keyword = ''
@@ -25,8 +30,7 @@ interview_keyword = ''
 search_history = {}
 
 
-def get_job_list(offset=0, per_page=10):
-    global job_list
+def get_job_list(job_list, offset=0, per_page=10):
     return job_list[offset: offset + per_page]
 
 def get_key_word():
@@ -41,8 +45,10 @@ def index():
 
 @app.route('/search')
 def search():
-    global job_list, keyword, keyword_trans, area_list, category_list, condition, work_time, salary_type, salary, search_history
-    job_list.clear()
+    # session['job_list'] = []
+    global keyword, keyword_trans, area_list, category_list, condition, work_time, salary_type, salary, search_history
+    # session['job_list'].clear()
+    job_list = []
     area_list.clear()
     category_list.clear()
     area_num_104, area_num_1111, area_num_518 = [] , [], []
@@ -148,7 +154,7 @@ def search():
                 job_dict['company']['name'] = job_doc('ul:nth-child(2) li:nth-child(2) a').text()
                 job_dict['company']['link'] = job_doc('ul:nth-child(2) li:nth-child(2) a').attr('href')
                 job_dict['area'] = job_doc('ul.b-list-inline.b-clearfix.job-list-intro.b-content li:nth-child(1)').text()
-                job_dict['wage'] = job_doc('div.b-block__left > div > span:nth-child(1)')
+                job_dict['wage'] = job_doc('div.b-block__left > div > span:nth-child(1)').text()
                 job_dict['experience'] = job_doc('ul.b-list-inline.b-clearfix.job-list-intro.b-content li:nth-child(3)').text()
                 job_dict['education'] = job_doc('ul.b-list-inline.b-clearfix.job-list-intro.b-content li:nth-child(5)').text()            
                 job_list.append(job_dict)
@@ -280,23 +286,26 @@ def search():
     # except ConnectionError:
     #     print('518 connection error')
 
-    
+    # session.modified = True
     print('length of job_list:', len(job_list))
     print('search history:', search_history)
     print('[redirect to /results]')
+    session['job_list'] = job_list
 
     return redirect(url_for('results'))
 
 
 @app.route('/results')
 def results():
-    global keyword, keyword_trans, job_list, condition, search_history
+    keyword = session.get('keyword')
+    job_list = session.get('job_list')
+    print(job_list)
+    global keyword_trans, condition, search_history
     page, per_page, offset = get_page_args(page_parameter='page',
                                     per_page_parameter='per_page')
     total = len(job_list)
-    pagination_job_list = get_job_list(offset=offset, per_page=per_page)
+    pagination_job_list = get_job_list(job_list, offset=offset, per_page=per_page)
     pagination = Pagination(page=page, per_page=per_page, total=total, css_framework='bootstrap4')
-    keyword = session['keyword']
     print('[redirected]')
     print(keyword)
     return render_template('results.html', 
