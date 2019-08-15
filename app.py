@@ -18,8 +18,7 @@ Session(app)
 
 char_dict = {' ':'%20', '!':'%21', '"':'%22', '#':'%23', '$':'%24', '%':'%25', '&':'%26', '\'':'%27',
             '(':'%28', ')':'%29', '*':'%2A', '+':'%2B', ',':'%2C', '-':'%2D', '.':'%2E', '/':'%2F'}
-keyword = ''
-keyword_trans = ''
+
 area_list = []
 category_list = []
 condition = ''
@@ -31,10 +30,6 @@ salary = ''
 
 def get_job_list(job_list, offset=0, per_page=10):
     return job_list[offset: offset + per_page]
-
-def get_key_word():
-    global keyword
-    return keyword
 
 
 @app.route('/')
@@ -51,7 +46,7 @@ def search():
         session['search_history']
     except:
         session['search_history'] = {}
-    global keyword, keyword_trans, area_list, category_list, condition, work_time, salary_type, salary
+    global area_list, category_list, condition, work_time, salary_type, salary
     # session['job_list'].clear()
     job_list = []
     area_list.clear()
@@ -107,11 +102,12 @@ def search():
 
     for k in keyword:
         if k in char_dict:
-            keyword_trans = keyword.replace(k, char_dict[k])
+            session['keyword_trans'] = keyword.replace(k, char_dict[k])
         else:
-            keyword_trans = keyword
+            session['keyword_trans'] = keyword
     if not keyword:
-        keyword_trans = ''
+        session['keyword_trans'] = ''
+    keyword_trans = session['keyword_trans']
 
     search_url = 'https://my-job-searcher.herokuapp.com/search?keyword={}&area={}&category={}&work-time={}&salary-type={}&salary={}'.format(keyword_trans, '&area'.join(area_list), '&category'.join(category_list), work_time, salary_type, salary)
     # search_url = 'http://127.0.0.1:5000/search?keyword={}&area={}&category={}&work-time={}&salary-type={}&salary={}'.format(keyword_trans, '&area'.join(area_list), '&category'.join(category_list), work_time, salary_type, salary)
@@ -304,7 +300,8 @@ def search():
 def results():
     keyword = session.get('keyword')
     job_list = session.get('job_list')
-    global keyword_trans, condition
+    keyword_trans = session.get('keyword_trans')
+    global condition
     page, per_page, offset = get_page_args(page_parameter='page',
                                     per_page_parameter='per_page')
     total = len(job_list)
