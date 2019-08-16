@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Lato:400,700');
+/* @import url('https://fonts.googleapis.com/css?family=Lato:400,700'); */
 
 body {
   overflow-x: hidden;
@@ -12,8 +12,6 @@ body {
   height: 3.7rem;
   margin-top: -4rem;
 }
-
-/*--- Navigation --*/
 
 .navbar {
   text-transform: uppercase;
@@ -37,16 +35,15 @@ body {
   color: rgb(26, 195, 224);
 }
 
-/*--- Landing Page --*/
 .home-inner {
   background-image: url(img/computers.png)
 }
 .caption {
   width: 100%;
   max-width: 100%;
-  position: absolute;/*因為要讓caption固定在頁面的某個位置*/
+  position: absolute;
   top: 38%;
-  z-index: 1;/*讓它永遠顯示在背景之上*/
+  z-index: 1;
   color: white;
   text-transform: uppercase;
 }
@@ -64,12 +61,9 @@ body {
 }
 .btn-lg {
   border-width: medium;
-  border-radius: 0;
   padding: .6rem 1.3rem;
   font-size: 1.1rem;
 }
-
-/*--- Course Section ---*/
 
 .narrow {
   width: 75%;
@@ -95,12 +89,6 @@ body {
   border-color: #189582;
 }
 
-/*--- Feature Section ---*/
-/* .jumbotron {
-  margin-bottom: 0;
-  padding: 2rem 0 3.5rem;
-  border-radius: 0;
-} */
 h3.heading {
   font-size: 1.9rem;
   font-weight: 700;
@@ -125,11 +113,9 @@ h3.heading {
   font-size: 1.1rem;
 }
 
-/*--- Resources Section ---*/
-
 .fixed {
   background-image: url(img/apple.png);
-  z-index: -1; /* 讓圖片在content底下 */
+  z-index: -1; 
 }
 .dark {
   background-color: rgba(0, 0, 0, 0.75);
@@ -143,7 +129,6 @@ h3.heading {
   margin-top: 1.5rem;
 }
 
-/*--- Clients Sectiom ---*/
 .clients img {
   width: 100%;
   border-radius: 50%;
@@ -156,7 +141,6 @@ blockquote .svg-inline--fa {
   border-top: .05rem solid #1ebba3;
 }
 
-/*--- Contact Section ---*/
 footer {
   background-color: #40474e;
   color: white;
@@ -182,8 +166,6 @@ hr.socket {
   border-top: .2rem solid #666b71;
   margin-top: 3rem;
 }
-
-/*--- Media Queries ---*/
 
 @media (max-width: 767px) {
 .caption h1 {
